@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "baseUrl": "src",
+        "paths": {
+            "@components/*": [
+                "./src/components/*"
+            ],
+            "@screens/*": [
+                "./src/screens/*"
+            ],
+            "@context/*": [
+                "./src/context/*"
+            ],
+            "@store/*": [
+                "./src/store/*"
+            ],
+            "@page-components/*": [
+                "./src/page-components/*"
+            ],
+            "@utility/*": [
+                "./src/utility/*"
+            ]
+        }
+    },
+    "include": [
+        "src"
+    ]
+}
