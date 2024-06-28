@@ -216,3 +216,41 @@ export const GetLoggedInUserAccounts = (isInvestor) => {
     refreshData,
   }
 }
+
+export const GetMyAvailablePledgeQuantity = (
+    pledgeType,
+    projectId,
+  ) => {
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState([])
+  const [refresh, setRefresh] = useState(0)
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setData([])
+        setLoading(true)
+        const response = await UsersService.getAvailablePledgeQuantity(projectId,pledgeType)
+        setData(response?.accounts || [])
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (projectId && pledgeType) {
+      fetch()
+    }
+  }, [refresh, projectId, pledgeType])
+
+  const refreshData = () => {
+    setRefresh(Math.random())
+  }
+
+  return {
+    data,
+    loading,
+    refreshData,
+  }
+}

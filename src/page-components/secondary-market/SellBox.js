@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
   FormSelectionField,
-  MaskedCurrencyFormField,
+  MaskedCurrencyFormField, MaskedNumberFormField,
   PrimaryButton,
 } from 'elements'
 import { useForm } from 'react-hook-form'
@@ -12,14 +12,14 @@ import { Form } from 'antd'
 import {
   CommonUtility,
   DateFormat,
-  DateUtility,
+  DateUtility, OfferingType, OfferingTypes,
   TxStatusKey,
   WalletTxType,
   WalletTxTypeKey,
 } from 'utility'
 import { CustomTooltip } from 'components'
 import { Info } from 'phosphor-react'
-import { GetMyTransactionsHook } from 'hooks'
+import { GetMyTransactionsHook, GetMyAvailablePledgeQuantity } from 'hooks'
 import { SellConfirmationModal } from './SellConfirmationModal'
 import { SuccessModal } from 'page-components/projects'
 import FieldSet from 'components/FieldSet'
@@ -57,6 +57,24 @@ export const SellBox = ({ data, successClick }) => {
     statusType,
   )
 
+  const typeList = useMemo(() => {
+    let temp = OfferingTypes.filter((x) => x.value !== OfferingType.both)
+    if (data.offeringType === OfferingType.equity) {
+      temp = temp.filter((x) => x.value !== OfferingType.debt)
+    } else if (data.offeringType === OfferingType.debt) {
+      temp = temp.filter((x) => x.value !== OfferingType.equity)
+    }
+    return temp
+  }, [data])
+
+  console.log("typeList---",typeList)
+
+  const { data: pledgeQuantity } = GetMyAvailablePledgeQuantity(
+      typeList[0]?.value.toLowerCase(),
+      data?._id,
+  )
+  console.log("pledgeQuantity",pledgeQuantity)
+
   const transactionList = useMemo(
     () =>
       transactions
@@ -77,6 +95,8 @@ export const SellBox = ({ data, successClick }) => {
         })),
     [transactions],
   )
+
+  console.log("transactionList",transactionList)
 
   const {
     control,
@@ -118,40 +138,63 @@ export const SellBox = ({ data, successClick }) => {
         <Form layout="vertical" onFinish={handleSubmit(save)}>
           <div className="p-3">
             <div className="row g-3 mt-0">
-              <div className="col-12 col-lg-4 col-sm-12 mt-0">
-                <MaskedCurrencyFormField
-                  label="Price per Share"
-                  control={control}
-                  name="value"
-                  errors={errors?.value}
-                  inputExtraClass="mb-0"
+              <div className="col-12 col-lg-12 col-sm-12 mt-0">
+                <MaskedNumberFormField
+                    control={control}
+                    name="quantity"
+                    label="Share Quantity"
+                    errors={errors?.tokenCountTo}
+                    inputExtraClass="mb-0"
                 />
+                {/* <FormSelectionField
+                    name="transactionId"
+                    control={control}
+                    errors={errors?.transactionId}
+                    label="Positions to sell"
+                    required
+                    options={transactionList}
+                    extraLabel={
+                      <CustomTooltip text="You need to choose from existing share transactions available for sale.">
+                        <Info size={32} />
+                      </CustomTooltip>
+                    }
+                /> */}
               </div>
-              <div className="col-12 col-lg-8 col-sm-12 mt-0">
-                <FormSelectionField
-                  name="transactionId"
-                  control={control}
-                  errors={errors?.transactionId}
-                  label="Positions to sell"
-                  required
-                  options={transactionList}
-                  extraLabel={
-                    <CustomTooltip text="You need to choose from existing share transactions available for sale.">
-                      <Info size={32} />
-                    </CustomTooltip>
-                  }
-                />
+              <div className="row g-3 mt-4">
+                <div className="col-12 col-lg-6 col-sm-12 mt-0">
+                    <FormSelectionField
+                        name="equityOrDebt"
+                        control={control}
+                        errors={errors?.equityOrDebt}
+                        label="Type of Shares"
+                        required
+                        options={typeList}
+                        extraLabel={
+                          <CustomTooltip text="Choose the shares type: Equity (ownership shares) or Debt (borrowed funds).">
+                            <Info size={32} />
+                          </CustomTooltip>
+                        }
+                    />
+                </div>
+                <div className="col-12 col-lg-6 col-sm-12 mt-0">
+                    <MaskedCurrencyFormField
+                        label="Price per Share"
+                        control={control}
+                        name="value"
+                        errors={errors?.value}
+                        inputExtraClass="mb-0"
+                    />
+                </div>
               </div>
             </div>
-
             <PrimaryButton
-              className="ps-4 pe-4"
-              shape="round"
-              border={1}
-              heightsmall={1}
-              dangerBtn={1}
-              full={1}
-              htmlType="submit"
+                className="ps-4 pe-4"
+                shape="round"
+                border={1}
+                heightsmall={1}
+                dangerBtn={1}
+                full={1}
+                htmlType="submit"
             >
               Submit Sell Order
             </PrimaryButton>
@@ -159,17 +202,17 @@ export const SellBox = ({ data, successClick }) => {
         </Form>
       </ShareCalculatorBlock>
       <SellConfirmationModal
-        data={sellData}
-        closeModal={closeModal}
-        open={openSellModal}
+          data={sellData}
+          closeModal={closeModal}
+          open={openSellModal}
       />
       <SuccessModal
-        open={openSuccessModal}
-        title="Congratulations!"
-        description="Your sell order has been successfully submitted. Thank you for trading with us!"
-        btnText="View Secondary Market"
-        onBtnClick={onSuccessClick}
-        className="success-modal"
+          open={openSuccessModal}
+          title="Congratulations!"
+          description="Your sell order has been successfully submitted. Thank you for trading with us!"
+          btnText="View Secondary Market"
+          onBtnClick={onSuccessClick}
+          className="success-modal"
       />
     </FieldSet>
   )

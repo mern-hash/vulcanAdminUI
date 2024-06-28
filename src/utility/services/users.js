@@ -29,6 +29,14 @@ class Users extends CRUDService {
       : APIPath.removeFavouriteProject
     return BaseService.patch(`${url}/${projectId}`)
   }
+
+  getAvailablePledgeQuantity(projectId,pledgeType) {
+    let url = APIPath.availablePledgeQuantity
+    if (projectId && pledgeType) {
+      url += `/${projectId}/${pledgeType}`
+    }
+    return BaseService.get(url);
+  }
 }
 
 const UsersService = new Users()

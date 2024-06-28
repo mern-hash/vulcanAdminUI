@@ -40,6 +40,7 @@ export const APIPath = {
   walletWithdrawFund: 'users/logged-in/wallet/withdraw-funds',
   lastActiveDate: "users/logged-in/last-active-date",
   registerSponsor: 'users/register-sponsor',
+  availablePledgeQuantity: 'users/available-pledge-quantity',
 
   // Plaid
   plaidCreateLinkToken: 'plaid/create_link_token',
