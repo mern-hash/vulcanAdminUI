@@ -222,7 +222,7 @@ export const GetMyAvailablePledgeQuantity = (
     projectId,
   ) => {
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState([])
+  const [data, setData] = useState(null)
   const [refresh, setRefresh] = useState(0)
 
   useEffect(() => {
@@ -231,7 +231,7 @@ export const GetMyAvailablePledgeQuantity = (
         setData([])
         setLoading(true)
         const response = await UsersService.getAvailablePledgeQuantity(projectId,pledgeType)
-        setData(response?.accounts || [])
+        setData(response?.data || null)
       } catch (error) {
         console.log(error)
       } finally {

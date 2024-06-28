@@ -53,6 +53,9 @@ export class BaseService {
       {
         url,
         method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
       isSecure,
     )

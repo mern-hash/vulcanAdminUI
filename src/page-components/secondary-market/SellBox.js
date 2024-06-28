@@ -7,7 +7,7 @@ import {
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import styled from 'styled-components'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Form } from 'antd'
 import {
   CommonUtility,
@@ -29,19 +29,11 @@ const ShareCalculatorBlock = styled.div`
   border-bottom-right-radius: 8px;
 `
 
-const SellSchema = yup.object().shape({
-  value: yup
-    .number()
-    .typeError('Share Price is required')
-    .positive()
-    .required('Share Price is required'),
-  transactionId: yup.string().required('Transaction is required'),
-})
-
 export const SellBox = ({ data, successClick }) => {
   const [openSellModal, setOpenSellModal] = useState(false)
   const [openSuccessModal, setOpenSuccessModal] = useState(false)
   const [sellData, setSellData] = useState(null)
+  const [transactionType, setTransactionType] = useState()
 
   const types = useMemo(
     () => [WalletTxTypeKey.equity, WalletTxTypeKey.debt],
@@ -57,6 +49,8 @@ export const SellBox = ({ data, successClick }) => {
     statusType,
   )
 
+  useEffect(() => { console.log("transactions",transactions) }, [transactions])
+
   const typeList = useMemo(() => {
     let temp = OfferingTypes.filter((x) => x.value !== OfferingType.both)
     if (data.offeringType === OfferingType.equity) {
@@ -67,13 +61,23 @@ export const SellBox = ({ data, successClick }) => {
     return temp
   }, [data])
 
-  console.log("typeList---",typeList)
+  const { data: pledgeQuantity, refreshData } = GetMyAvailablePledgeQuantity(
+    transactionType,
+    data?._id)
 
-  const { data: pledgeQuantity } = GetMyAvailablePledgeQuantity(
-      typeList[0]?.value.toLowerCase(),
-      data?._id,
-  )
-  console.log("pledgeQuantity",pledgeQuantity)
+    console.log("pledgeQuantity---",pledgeQuantity)
+
+  useEffect(() => { console.log("data123", data) } ,[data])
+
+  const SellSchema = yup.object().shape({
+    quantity: yup.number().typeError("Quantity is Required").positive().required("Quantity is Required")
+    .lessThan(pledgeQuantity + 1, `Quantity should be less than or equal to ${pledgeQuantity}`),
+    value: yup
+      .number()
+      .typeError('Share Price is required')
+      .positive()
+      .required('Share Price is required'),
+  })
 
   const transactionList = useMemo(
     () =>
@@ -108,13 +112,11 @@ export const SellBox = ({ data, successClick }) => {
   })
 
   const save = async (formData) => {
-    const tx = transactions.find((x) => x._id === formData.transactionId)
     setSellData({
       ...formData,
-      equityOrDebt: tx.type,
-      noOfShares: tx.equityPledge
-        ? CommonUtility.numberWithCommas(tx.equityPledge?.tokenCount || 0)
-        : CommonUtility.numberWithCommas(tx.debtPledge?.tokenCount || 0),
+      equityOrDebt: transactionType,
+      projectId: data._id,
+
     })
     setOpenSellModal(true)
   }
@@ -132,6 +134,11 @@ export const SellBox = ({ data, successClick }) => {
     successClick(newChanged)
   }
 
+  const refresh = async (e) => {
+     setTransactionType(e.toLowerCase())
+     await refreshData()
+  }
+
   return (
     <FieldSet labelText="Offer to sell">
       <ShareCalculatorBlock>
@@ -143,7 +150,7 @@ export const SellBox = ({ data, successClick }) => {
                     control={control}
                     name="quantity"
                     label="Share Quantity"
-                    errors={errors?.tokenCountTo}
+                    errors={errors?.quantity}
                     inputExtraClass="mb-0"
                 />
                 {/* <FormSelectionField
@@ -169,6 +176,7 @@ export const SellBox = ({ data, successClick }) => {
                         label="Type of Shares"
                         required
                         options={typeList}
+                        onChange={refresh}
                         extraLabel={
                           <CustomTooltip text="Choose the shares type: Equity (ownership shares) or Debt (borrowed funds).">
                             <Info size={32} />

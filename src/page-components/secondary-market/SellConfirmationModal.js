@@ -20,7 +20,8 @@ export const SellConfirmationModal = ({ data, open, closeModal }) => {
       await SecondaryMarketService.createSell({
         value: CommonUtility.toDecimal(data.value),
         equityOrDebt: data.equityOrDebt.toLowerCase(),
-        transactionId: data.transactionId,
+        quantity: +data.quantity,
+        projectId: data.projectId,
       })
       closeModal(true)
     } catch (error) {
