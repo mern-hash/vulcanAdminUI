@@ -252,7 +252,7 @@ export const ProjectDetailsScreen = () => {
     () => [TxStatusKey.processed, TxStatusKey.created],
     [],
   )
-  const { data: transactions, refreshData: refreshTransactions } =
+  const { data: transactions,shareData, refreshData: refreshTransactions } =
     GetMyTransactionsHook(types, id, statusType)
 
   // const filteredTransactions = useMemo(
@@ -551,17 +551,17 @@ export const ProjectDetailsScreen = () => {
             </div>
           </div>
           <div className="col col-12 col-md-12 col-lg-12 col-xl-5 col-xxl-5">
-            {currentUser?._id && transactions.length > 0 && (
+            {currentUser?._id && transactions && (
               <div className="my-3">
                 <SubTitle>My Shares</SubTitle>
-                <Transactions list={transactions} />
+                <Transactions list={shareData} />
               </div>
             )}
             <SideTabs type="card" items={investmentTypes} />
             {currentUser?._id && transactions.length === 0 && (
               <div className="my-3">
                 <SubTitle>My Shares</SubTitle>
-                <Transactions list={transactions} />
+                <Transactions list={shareData} />
               </div>
             )}
             {secondaryMarketplaceEnabled && (

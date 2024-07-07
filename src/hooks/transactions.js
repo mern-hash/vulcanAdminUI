@@ -100,6 +100,7 @@ export const GetMyTransactionsHook = (
   statusType,
 ) => {
   const [data, setData] = useState([])
+  const [shareData, setShareData] = useState([])
   const [loading, setLoading] = useState(false)
   const [refresh, setRefresh] = useState(0)
   const [total, setTotal] = useState(0)
@@ -142,6 +143,7 @@ export const GetMyTransactionsHook = (
         })
         if (projectId) {
           setData(response.data.filter((x) => !x.secondaryMarketBuyListingId))
+          setShareData(response)
         } else {
           setData(response.data)
         }
@@ -193,6 +195,7 @@ export const GetMyTransactionsHook = (
     pageChanged,
     filterChanged,
     total,
+    shareData,
   }
 }
 

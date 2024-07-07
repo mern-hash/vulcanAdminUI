@@ -5,40 +5,33 @@ import { useMemo } from 'react';
 
 export const Transactions = ({ list }) => {
   const aggregatedData = useMemo(() => {
-    const result = list.reduce((acc, item) => {
-      const { type, equityPledge, debtPledge } = item;
-      const tokenCount = equityPledge?.tokenCount || debtPledge?.tokenCount || 0;
-      const value = parseFloat(item.value);
-      const createdAt = new Date(item.createdAt);
+    const result = [
+      {
+        type: 'debt',
+        tokenCount: list.debtMetrics?.shares,
+        totalValue: list.debtMetrics?.averageAmount,
+        mostRecentDate: new Date(list.debtMetrics?.date),
+      },
+      {
+        type: 'equity',
+        tokenCount: list.equityMetrics?.shares,
+        totalValue: list.equityMetrics?.averageAmount ,
+        mostRecentDate: new Date(list.equityMetrics?.date),
+      },
+    ];
 
-      if (!acc[type]) {
-        acc[type] = {
-          type,
-          tokenCount: 0,
-          totalPrice: 0,
-          totalValue: 0,
-          count: 0,
-          mostRecentDate: createdAt,
-        };
-      }
+    // Filter out entries where tokenCount is zero
+    const filteredResult = result.filter((data) => data.tokenCount > 0);
 
-      acc[type].tokenCount += tokenCount;
-      acc[type].totalValue += value;
-      acc[type].count += 1;
-      acc[type].mostRecentDate = createdAt > acc[type].mostRecentDate ? createdAt : acc[type].mostRecentDate;
-console.log("acc", acc)
-      return acc;
-    }, {});
-
-    const data = Object.values(result).map((data) => ({
+    const data = filteredResult.map((data) => ({
       type: data.type,
       tokenCount: data.tokenCount,
-      averagePrice: data.totalValue / data.tokenCount,
-      totalValue: data.totalValue,
+      averagePrice: data.totalValue,
+      // totalValue: data.totalValue,
       mostRecentDate: data.mostRecentDate,
     }));
 
-    return data
+    return data;
   }, [list]);
 
   const columns = useMemo(
@@ -62,7 +55,7 @@ console.log("acc", acc)
         render: (count) => CommonUtility.numberWithCommas(count),
       },
       {
-        title: 'Total Paid',
+        title: 'Average Price',
         dataIndex: 'averagePrice',
         key: 'averagePrice',
         render: (amount) => CommonUtility.currencyFormat(amount),
