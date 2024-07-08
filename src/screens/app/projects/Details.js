@@ -8,7 +8,7 @@ import {
   SteppedProgress,
   TextCopyToClipboard,
 } from 'components'
-import { GetMyTransactionsHook, GetPublicProjectById } from 'hooks'
+import { GetCurrentUserSharesHook, GetMyTransactionsHook, GetPublicProjectById } from 'hooks'
 import { Heart } from 'phosphor-react'
 import styled from 'styled-components'
 import { OfferingImages } from 'page-components/offerings'
@@ -252,16 +252,20 @@ export const ProjectDetailsScreen = () => {
     () => [TxStatusKey.processed, TxStatusKey.created],
     [],
   )
-  const { data: transactions,shareData, refreshData: refreshTransactions } =
+  const { data: transactions, refreshData: refreshTransactions } =
     GetMyTransactionsHook(types, id, statusType)
 
-  // const filteredTransactions = useMemo(
-  //   () =>
-  //     transactions.filter(
-  //       (x) => !(x.secondaryMarketSellListingId && x.boughtOnSecondaryMarket),
-  //     ),
-  //   [transactions],
-  // )
+  const { data: shares } = GetCurrentUserSharesHook(types, id, statusType);
+
+  console.log("shares", shares)
+
+  const filteredTransactions = useMemo(
+    () =>
+      transactions.filter(
+        (x) => !(x.secondaryMarketSellListingId && x.boughtOnSecondaryMarket),
+      ),
+    [transactions],
+  )
 
   useEffect(() => {
     const tabs = document.querySelectorAll('.tab')
@@ -551,17 +555,17 @@ export const ProjectDetailsScreen = () => {
             </div>
           </div>
           <div className="col col-12 col-md-12 col-lg-12 col-xl-5 col-xxl-5">
-            {currentUser?._id && transactions && (
+            {currentUser?._id && transactions.length > 0 && (
               <div className="my-3">
                 <SubTitle>My Shares</SubTitle>
-                <Transactions list={shareData} />
+                <Transactions list={shares} />
               </div>
             )}
             <SideTabs type="card" items={investmentTypes} />
             {currentUser?._id && transactions.length === 0 && (
               <div className="my-3">
                 <SubTitle>My Shares</SubTitle>
-                <Transactions list={shareData} />
+                <Transactions list={filteredTransactions} />
               </div>
             )}
             {secondaryMarketplaceEnabled && (

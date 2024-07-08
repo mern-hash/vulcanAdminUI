@@ -1,3 +1,4 @@
+import { CommonUtility } from 'utility/common'
 import { APIPath } from '../constant'
 import { BaseService } from './base'
 import { CRUDService } from './crud'
@@ -36,6 +37,14 @@ class Users extends CRUDService {
       url += `/${projectId}/${pledgeType}`
     }
     return BaseService.get(url);
+  }
+
+  mySharesData(params,reqData) {
+    let url = APIPath.myShares
+    if (params) {
+      url += `?${CommonUtility.objectToParams(params)}`
+    }
+    return BaseService.post(url,reqData)
   }
 }
 
