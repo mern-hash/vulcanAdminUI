@@ -56,7 +56,7 @@ export const SellConfirmationModal = ({ data, open, closeModal }) => {
           <div className="col col-4">
             <BoldText>Number of Shares</BoldText>
             <InvestmentValue>
-              {CommonUtility.numberWithCommas(data?.noOfShares)}
+              {CommonUtility.numberWithCommas(data?.quantity)}
             </InvestmentValue>
           </div>
           <div className="col col-4">
@@ -71,7 +71,7 @@ export const SellConfirmationModal = ({ data, open, closeModal }) => {
               <InvestmentValue>
                 <BoldText>
                   {CommonUtility.currencyFormat(
-                    (data?.noOfShares || 0) * (data?.value || 0),
+                    (data?.quantity || 0) * (data?.value || 0),
                   )}
                 </BoldText>
               </InvestmentValue>
