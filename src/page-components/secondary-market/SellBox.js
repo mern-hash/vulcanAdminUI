@@ -7,19 +7,14 @@ import {
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import styled from 'styled-components'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Form } from 'antd'
 import {
-  CommonUtility,
-  DateFormat,
-  DateUtility, OfferingType, OfferingTypes,
-  TxStatusKey,
-  WalletTxType,
-  WalletTxTypeKey,
+  OfferingType, OfferingTypes,
 } from 'utility'
 import { CustomTooltip } from 'components'
 import { Info } from 'phosphor-react'
-import { GetMyTransactionsHook, GetMyAvailablePledgeQuantity } from 'hooks'
+import { GetMyAvailablePledgeQuantity } from 'hooks'
 import { SellConfirmationModal } from './SellConfirmationModal'
 import { SuccessModal } from 'page-components/projects'
 import FieldSet from 'components/FieldSet'
@@ -35,22 +30,6 @@ export const SellBox = ({ data, successClick }) => {
   const [sellData, setSellData] = useState(null)
   const [transactionType, setTransactionType] = useState()
 
-  const types = useMemo(
-    () => [WalletTxTypeKey.equity, WalletTxTypeKey.debt],
-    [],
-  )
-  const statusType = useMemo(
-    () => [TxStatusKey.processed, TxStatusKey.created],
-    [],
-  )
-  const { data: transactions } = GetMyTransactionsHook(
-    types,
-    data?._id,
-    statusType,
-  )
-
-  useEffect(() => { console.log("transactions",transactions) }, [transactions])
-
   const typeList = useMemo(() => {
     let temp = OfferingTypes.filter((x) => x.value !== OfferingType.both)
     if (data.offeringType === OfferingType.equity) {
@@ -65,10 +44,6 @@ export const SellBox = ({ data, successClick }) => {
     transactionType,
     data?._id)
 
-    console.log("pledgeQuantity---",pledgeQuantity)
-
-  useEffect(() => { console.log("data123", data) } ,[data])
-
   const SellSchema = yup.object().shape({
     quantity: yup.number().typeError("Quantity is Required").positive().required("Quantity is Required")
     .lessThan(pledgeQuantity + 1, `Quantity should be less than or equal to ${pledgeQuantity}`),
@@ -78,29 +53,6 @@ export const SellBox = ({ data, successClick }) => {
       .positive()
       .required('Share Price is required'),
   })
-
-  const transactionList = useMemo(
-    () =>
-      transactions
-        // .filter(
-        //   (x) =>
-        //     x.status === TxStatusKey.processed &&
-        //     !(x.secondaryMarketSellListingId && x.boughtOnSecondaryMarket),
-        // )
-        .map((x) => ({
-          value: x._id,
-          label: `${DateUtility.dateToString(x.createdAt, DateFormat.date)}-${
-            WalletTxType[x.type]
-          }-${
-            x?.equityPledge
-              ? CommonUtility.numberWithCommas(x.equityPledge?.tokenCount || 0)
-              : CommonUtility.numberWithCommas(x.debtPledge?.tokenCount || 0)
-          }`,
-        })),
-    [transactions],
-  )
-
-  console.log("transactionList",transactionList)
 
   const {
     control,
@@ -153,19 +105,6 @@ export const SellBox = ({ data, successClick }) => {
                     errors={errors?.quantity}
                     inputExtraClass="mb-0"
                 />
-                {/* <FormSelectionField
-                    name="transactionId"
-                    control={control}
-                    errors={errors?.transactionId}
-                    label="Positions to sell"
-                    required
-                    options={transactionList}
-                    extraLabel={
-                      <CustomTooltip text="You need to choose from existing share transactions available for sale.">
-                        <Info size={32} />
-                      </CustomTooltip>
-                    }
-                /> */}
               </div>
               <div className="row g-3 mt-4">
                 <div className="col-12 col-lg-6 col-sm-12 mt-0">

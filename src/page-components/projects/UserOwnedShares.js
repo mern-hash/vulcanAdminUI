@@ -1,9 +1,9 @@
 /* eslint-disable no-nested-ternary */
+import { useMemo } from 'react';
 import { AppTable } from 'components';
 import { CommonUtility, DateFormat, DateUtility, WalletTxType } from 'utility';
-import { useMemo } from 'react';
 
-export const Transactions = ({ list }) => {
+export const OwnedShares = ({ list }) => {
   const aggregatedData = useMemo(() => {
     const result = [
       {
@@ -27,7 +27,6 @@ export const Transactions = ({ list }) => {
       type: data.type,
       tokenCount: data.tokenCount,
       averagePrice: data.totalValue,
-      // totalValue: data.totalValue,
       mostRecentDate: data.mostRecentDate,
     }));
 

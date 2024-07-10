@@ -32,8 +32,8 @@ import {
   ProjectMarketOverview,
   ProjectKeyPoints,
   StatusTag,
-  Transactions,
   ProjectLocations,
+  OwnedShares,
 } from 'page-components/projects'
 import { useEffect, useMemo } from 'react'
 import { SubTitle } from 'elements'
@@ -256,16 +256,6 @@ export const ProjectDetailsScreen = () => {
     GetMyTransactionsHook(types, id, statusType)
 
   const { data: shares } = GetCurrentUserSharesHook(types, id, statusType);
-
-  console.log("shares", shares)
-
-  const filteredTransactions = useMemo(
-    () =>
-      transactions.filter(
-        (x) => !(x.secondaryMarketSellListingId && x.boughtOnSecondaryMarket),
-      ),
-    [transactions],
-  )
 
   useEffect(() => {
     const tabs = document.querySelectorAll('.tab')
@@ -558,16 +548,16 @@ export const ProjectDetailsScreen = () => {
             {currentUser?._id && transactions.length > 0 && (
               <div className="my-3">
                 <SubTitle>My Shares</SubTitle>
-                <Transactions list={shares} />
+                <OwnedShares list={shares} />
               </div>
             )}
             <SideTabs type="card" items={investmentTypes} />
-            {currentUser?._id && transactions.length === 0 && (
+            {/* {currentUser?._id && transactions.length === 0 && (
               <div className="my-3">
                 <SubTitle>My Shares</SubTitle>
                 <Transactions list={filteredTransactions} />
               </div>
-            )}
+            )} */}
             {secondaryMarketplaceEnabled && (
               <SecondaryMarketplace marketStatistics={data?.marketStatistics} />
             )}
