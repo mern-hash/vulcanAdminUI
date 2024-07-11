@@ -53,16 +53,22 @@ export const SellConfirmationModal = ({ data, open, closeModal }) => {
       <Form layout="vertical">
         {processing && <LoaderBar />}
         <div className="row g-3">
-          <div className="col col-4">
+          <div className="col col-3">
             <BoldText>Number of Shares</BoldText>
             <InvestmentValue>
               {CommonUtility.numberWithCommas(data?.quantity)}
             </InvestmentValue>
           </div>
-          <div className="col col-4">
+          <div className="col col-3">
             <BoldText>Share Price</BoldText>
             <InvestmentValue>
               {CommonUtility.currencyFormat(data?.value)}
+            </InvestmentValue>
+          </div>
+          <div className="col col-3">
+            <BoldText>Share Type</BoldText>
+            <InvestmentValue>
+              {data.equityOrDebt}
             </InvestmentValue>
           </div>
           <div className="col col-12">

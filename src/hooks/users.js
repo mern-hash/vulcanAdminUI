@@ -256,57 +256,20 @@ export const GetMyAvailablePledgeQuantity = (
 }
 
 export const GetCurrentUserSharesHook = (
-  transactionTypes,
   projectId,
-  statusType,
 ) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const [refresh, setRefresh] = useState(0)
-  const [total, setTotal] = useState(0)
-  const [filter, setFilter] = useState({
-    totalPerPage: CommonConstant.defaultPageSize,
-    pageNumber: 1,
-  })
 
   useEffect(() => {
     const fetch = async () => {
       try {
         setLoading(true)
 
-        const tempFilter = { ...filter }
-        if (!tempFilter.email) {
-          delete tempFilter.email
-        }
-        if (!tempFilter.id) {
-          delete tempFilter.id
-        }
-        delete tempFilter.transactionTypes
-
-        const temp = {}
-        temp.transactionTypes = transactionTypes
-
-        if (filter.projectId) {
-          temp.projectId = filter.projectId
-        }
-        delete tempFilter.projectId
-
-        if (projectId) {
-          temp.projectId = projectId
-        }
-        if (statusType) {
-          tempFilter.statusList = statusType
-        }
-
-        const response = await UsersService.mySharesData(temp, {
-          ...tempFilter,
-        })
+        const response = await UsersService.mySharesData({ projectId })
         if (projectId) {
           setData(response)
-        } else {
-          setData(response.data)
         }
-        setTotal(response.total)
       } catch (error) {
         console.log(error)
       } finally {
@@ -315,44 +278,10 @@ export const GetCurrentUserSharesHook = (
     }
 
     fetch()
-  }, [filter, refresh])
-
-  const refreshData = () => {
-    setRefresh(Math.random())
-  }
-
-  const filterChanged = (tempFilter) => {
-    setFilter({
-      ...filter,
-      ...tempFilter,
-      pageNumber: 1,
-      email: (tempFilter.email || '').trim(),
-      id: (tempFilter.id || '').trim(),
-    })
-  }
-
-  const pageChanged = (page, pageSize) => {
-    if (pageSize !== filter.totalPerPage) {
-      setFilter({
-        ...filter,
-        totalPerPage: pageSize,
-        pageNumber: 1,
-      })
-    } else {
-      setFilter({
-        ...filter,
-        pageNumber: page,
-      })
-    }
-  }
+  }, [])
 
   return {
     data,
     loading,
-    refreshData,
-    filter,
-    pageChanged,
-    filterChanged,
-    total,
   }
 }

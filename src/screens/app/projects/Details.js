@@ -255,7 +255,7 @@ export const ProjectDetailsScreen = () => {
   const { data: transactions, refreshData: refreshTransactions } =
     GetMyTransactionsHook(types, id, statusType)
 
-  const { data: shares } = GetCurrentUserSharesHook(types, id, statusType);
+  const { data: shares } = GetCurrentUserSharesHook(id);
 
   useEffect(() => {
     const tabs = document.querySelectorAll('.tab')
