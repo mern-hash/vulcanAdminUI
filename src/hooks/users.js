@@ -285,3 +285,32 @@ export const GetCurrentUserSharesHook = (
     loading,
   }
 }
+
+export const GetCurrentUserAssets = () => {
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setLoading(true)
+
+        const response = await UsersService.userAssets()
+        if (true) {
+          setData(response)
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetch()
+  }, [])
+
+  return {
+    data,
+    loading,
+  }
+}

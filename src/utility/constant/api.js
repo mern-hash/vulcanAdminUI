@@ -42,6 +42,7 @@ export const APIPath = {
   registerSponsor: 'users/register-sponsor',
   availablePledgeQuantity: 'users/available-pledge-quantity',
   myShares: "users/get-all-logged-in-user-shares-data",
+  userAssets: 'users/logged-in/assets',
 
   // Plaid
   plaidCreateLinkToken: 'plaid/create_link_token',

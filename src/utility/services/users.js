@@ -46,6 +46,10 @@ class Users extends CRUDService {
     }
     return BaseService.post(url,reqData)
   }
+
+  userAssets() {
+    return BaseService.get(APIPath.userAssets)
+  }
 }
 
 const UsersService = new Users()
