@@ -68,7 +68,7 @@ export const SellConfirmationModal = ({ data, open, closeModal }) => {
           <div className="col col-3">
             <BoldText>Share Type</BoldText>
             <InvestmentValue>
-              {data.equityOrDebt}
+              {data?.equityOrDebt}
             </InvestmentValue>
           </div>
           <div className="col col-12">

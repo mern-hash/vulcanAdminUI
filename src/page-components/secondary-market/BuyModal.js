@@ -39,9 +39,9 @@ export const BuyModal = ({ data, open, closeModal }) => {
 
   const noOfShares = useMemo(
     () =>
-      data?.transaction?.equityPledge
-        ? data?.transaction.equityPledge?.tokenCount || 0
-        : data?.transaction.debtPledge?.tokenCount || 0,
+      data?.equityPledge
+        ? data?.equityPledge?.tokenCount || 0
+        : data?.debtPledge?.tokenCount || 0,
     [data],
   )
 

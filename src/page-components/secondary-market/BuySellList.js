@@ -118,12 +118,9 @@ export const SellList = ({
       },
       {
         title: 'Shares',
-        dataIndex: 'transaction',
-        key: 'transaction',
-        render: (x) =>
-          x?.equityPledge
-            ? CommonUtility.numberWithCommas(x.equityPledge?.tokenCount || 0)
-            : CommonUtility.numberWithCommas(x.debtPledge?.tokenCount || 0),
+        dataIndex: 'shares',
+        key: 'shares',
+        render: (_, record) => record.debtPledge ? CommonUtility.numberWithCommas(record?.debtPledge?.tokenCount || 0) : CommonUtility.numberWithCommas(record?.equityPledge?.tokenCount || 0),
       },
       {
         title: 'Total',
@@ -132,9 +129,9 @@ export const SellList = ({
         render: (_, record) =>
           `${CommonUtility.currencyFormat(
             (record?.value || 0) *
-              (record.transaction?.equityPledge
-                ? record.transaction?.equityPledge?.tokenCount || 0
-                : record.transaction?.debtPledge?.tokenCount || 0),
+              (record?.equityPledge
+                ? record?.equityPledge?.tokenCount || 0
+                : record?.debtPledge?.tokenCount || 0),
           )}`,
       },
       {
