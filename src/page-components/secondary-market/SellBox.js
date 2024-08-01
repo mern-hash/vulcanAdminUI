@@ -36,6 +36,8 @@ export const SellBox = ({ data, successClick }) => {
       temp = temp.filter((x) => x.value !== OfferingType.debt)
     } else if (data.offeringType === OfferingType.debt) {
       temp = temp.filter((x) => x.value !== OfferingType.equity)
+    } else if (data.offeringType === OfferingType.debtRisk) {
+      temp = temp.filter((x) => x.value !== OfferingType.equity)
     }
     return temp
   }, [data])
