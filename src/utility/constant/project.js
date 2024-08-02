@@ -17,6 +17,7 @@ export const OfferingType = {
   equity: 'EQUITY',
   debt: 'DEBT',
   both: 'BOTH',
+  debtRisk: 'DEBTRISK',
 }
 
 export const OfferingTypes = [
@@ -31,6 +32,10 @@ export const OfferingTypes = [
   {
     value: OfferingType.both,
     label: 'Both',
+  },
+  {
+    value: OfferingType.debtRisk,
+    label: 'Debt With Risk',
   },
 ]
 

@@ -1,3 +1,4 @@
+import { CommonUtility } from 'utility/common'
 import { APIPath } from '../constant'
 import { BaseService } from './base'
 import { CRUDService } from './crud'
@@ -28,6 +29,26 @@ class Users extends CRUDService {
       ? APIPath.addFavouriteProject
       : APIPath.removeFavouriteProject
     return BaseService.patch(`${url}/${projectId}`)
+  }
+
+  getAvailablePledgeQuantity(projectId,pledgeType) {
+    let url = APIPath.availablePledgeQuantity
+    if (projectId && pledgeType) {
+      url += `/${projectId}/${pledgeType}`
+    }
+    return BaseService.get(url);
+  }
+
+  mySharesData(params,reqData) {
+    let url = APIPath.myShares
+    if (params) {
+      url += `?${CommonUtility.objectToParams(params)}`
+    }
+    return BaseService.post(url,reqData)
+  }
+
+  userAssets() {
+    return BaseService.get(APIPath.userAssets)
   }
 }
 

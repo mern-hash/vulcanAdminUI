@@ -8,7 +8,7 @@ import {
   SteppedProgress,
   TextCopyToClipboard,
 } from 'components'
-import { GetMyTransactionsHook, GetPublicProjectById } from 'hooks'
+import { GetCurrentUserSharesHook, GetMyTransactionsHook, GetPublicProjectById } from 'hooks'
 import { Heart } from 'phosphor-react'
 import styled from 'styled-components'
 import { OfferingImages } from 'page-components/offerings'
@@ -32,8 +32,8 @@ import {
   ProjectMarketOverview,
   ProjectKeyPoints,
   StatusTag,
-  Transactions,
   ProjectLocations,
+  OwnedShares,
 } from 'page-components/projects'
 import { useEffect, useMemo } from 'react'
 import { SubTitle } from 'elements'
@@ -255,13 +255,7 @@ export const ProjectDetailsScreen = () => {
   const { data: transactions, refreshData: refreshTransactions } =
     GetMyTransactionsHook(types, id, statusType)
 
-  const filteredTransactions = useMemo(
-    () =>
-      transactions.filter(
-        (x) => !(x.secondaryMarketSellListingId && x.boughtOnSecondaryMarket),
-      ),
-    [transactions],
-  )
+  const { data: shares } = GetCurrentUserSharesHook(id);
 
   useEffect(() => {
     const tabs = document.querySelectorAll('.tab')
@@ -554,16 +548,16 @@ export const ProjectDetailsScreen = () => {
             {currentUser?._id && transactions.length > 0 && (
               <div className="my-3">
                 <SubTitle>My Shares</SubTitle>
-                <Transactions list={filteredTransactions} />
+                <OwnedShares list={shares} />
               </div>
             )}
             <SideTabs type="card" items={investmentTypes} />
-            {currentUser?._id && transactions.length === 0 && (
+            {/* {currentUser?._id && transactions.length === 0 && (
               <div className="my-3">
                 <SubTitle>My Shares</SubTitle>
                 <Transactions list={filteredTransactions} />
               </div>
-            )}
+            )} */}
             {secondaryMarketplaceEnabled && (
               <SecondaryMarketplace marketStatistics={data?.marketStatistics} />
             )}

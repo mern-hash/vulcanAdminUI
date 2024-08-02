@@ -216,3 +216,101 @@ export const GetLoggedInUserAccounts = (isInvestor) => {
     refreshData,
   }
 }
+
+export const GetMyAvailablePledgeQuantity = (
+    pledgeType,
+    projectId,
+  ) => {
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState(null)
+  const [refresh, setRefresh] = useState(0)
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setData([])
+        setLoading(true)
+        const response = await UsersService.getAvailablePledgeQuantity(projectId,pledgeType)
+        setData(response?.data || null)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (projectId && pledgeType) {
+      fetch()
+    }
+  }, [refresh, projectId, pledgeType])
+
+  const refreshData = () => {
+    setRefresh(Math.random())
+  }
+
+  return {
+    data,
+    loading,
+    refreshData,
+  }
+}
+
+export const GetCurrentUserSharesHook = (
+  projectId,
+) => {
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setLoading(true)
+
+        const response = await UsersService.mySharesData({ projectId })
+        if (projectId) {
+          setData(response)
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetch()
+  }, [])
+
+  return {
+    data,
+    loading,
+  }
+}
+
+export const GetCurrentUserAssets = () => {
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setLoading(true)
+
+        const response = await UsersService.userAssets()
+        if (true) {
+          setData(response)
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetch()
+  }, [])
+
+  return {
+    data,
+    loading,
+  }
+}

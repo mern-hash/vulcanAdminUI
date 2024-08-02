@@ -1,14 +1,15 @@
 import { BankList, LoaderBar, PageHeader } from 'components'
 import { useAuth } from 'context'
 import { Title } from 'elements'
-import { GetWalletDataHook } from 'hooks'
+import { GetCurrentUserAssets, GetWalletDataHook } from 'hooks'
 import { GetWalletOverview } from 'hooks/wallet'
 import {
   AddFundsModal,
   CapitalCallModal,
-  WalletList,
+  // WalletList,
   WalletOverview,
 } from 'page-components/Wallet'
+import { AssetsList } from 'page-components/Wallet/AssetsList'
 import { WithdrawFundsModal } from 'page-components/Wallet/WithdrawFundsModal'
 import { SuccessModal } from 'page-components/projects'
 import { useMemo, useState } from 'react'
@@ -109,6 +110,10 @@ export const WalletScreen = () => {
     pageChanged,
   } = GetWalletDataHook(transactionTypes)
 
+  const {
+    data: assets,
+  } = GetCurrentUserAssets()
+
   const [addFundOpen, setAddFundOpen] = useState(false)
   const [withdrawOpen, setWithdrawOpen] = useState(false)
 
@@ -163,7 +168,7 @@ export const WalletScreen = () => {
         </BankBLockRight>
       </BankBlock>
 
-      <WalletList
+      {/* <WalletList
         list={list}
         loading={loading}
         currentPage={filter.pageNumber}
@@ -171,7 +176,17 @@ export const WalletScreen = () => {
         total={total}
         capitalCall={capitalCall}
         pageSize={list.length}
-      />
+      /> */}
+
+      <AssetsList
+        list={assets}
+        loading={loading}
+        currentPage={filter.pageNumber}
+        pageChanged={pageChanged}
+        total={total}
+        capitalCall={capitalCall}
+        pageSize={list.length} />
+
       <AddFundsModal open={addFundOpen} closeModal={closeModal} />
       <WithdrawFundsModal
         open={withdrawOpen}
