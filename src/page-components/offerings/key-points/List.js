@@ -68,7 +68,7 @@ export const KeyPointsList = ({ keyPoints, setKeyPoints, canTakeAction }) => {
             </ButtonIcon>
             <Popconfirm
               title="Delete"
-              description="Are you sure, you want to delete this tranche?"
+              description="Are you sure, you want to delete this key point?"
               onConfirm={() => deleteTranch(record)}
               okButtonProps={{ disabled: false }}
               cancelButtonProps={{ disabled: false }}

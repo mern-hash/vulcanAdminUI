@@ -1,7 +1,7 @@
 import { AlignCenterFlexRow, AppTable, BorderWithShadow } from 'components'
 import { useMemo, useState } from 'react'
 import { UserDetailsModal } from '../UserDetailsModal'
-import { GetOfferingInvestorTransactionsHook } from 'hooks'
+import { GetInvestorsHook } from 'hooks'
 import { CommonUtility, ErrorConstant, ProjectsService } from 'utility'
 import { notification } from 'antd'
 import { IconPrimaryButton, PrimaryButton } from 'elements'
@@ -15,7 +15,7 @@ export const OfferingInvestors = ({ id }) => {
     pageChanged: transactionsPageChanged,
     currentPage: transactioncurrentPage,
     pageSize: transactionpageSize,
-  } = GetOfferingInvestorTransactionsHook(id)
+  } = GetInvestorsHook(id)
 
   const [modalData, setModalData] = useState(null)
   const [openModal, setOpenModal] = useState(false)
@@ -24,7 +24,7 @@ export const OfferingInvestors = ({ id }) => {
   const openUserData = (data) => {
     setModalData({
       projectId: id,
-      userId: data.owner?._id,
+      userId: data.user?._id,
     })
     setOpenModal(true)
   }
@@ -38,14 +38,14 @@ export const OfferingInvestors = ({ id }) => {
     () => [
       {
         title: 'Owner Name',
-        dataIndex: 'owner',
-        key: 'owner',
+        dataIndex: 'user',
+        key: 'user',
         render: (value) => `${value.givenName} ${value.familyName}`,
       },
       {
         title: 'Total Investment Price',
-        dataIndex: 'totalInvestmentPrice',
-        key: 'totalInvestmentPrice',
+        dataIndex: 'totalAmount',
+        key: 'totalAmount',
         render: (value) => CommonUtility.currencyFormat(value),
       },
       {
@@ -57,8 +57,8 @@ export const OfferingInvestors = ({ id }) => {
       },
       {
         title: 'Total Shares Count',
-        dataIndex: 'totalTokenCount',
-        key: 'totalTokenCount',
+        dataIndex: 'tokenCount',
+        key: 'tokenCount',
         render: (value) => CommonUtility.numberWithCommas(value),
       },
       {

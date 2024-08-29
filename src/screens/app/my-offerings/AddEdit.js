@@ -140,7 +140,6 @@ const ProjectSchema = yup.object().shape({
     .string()
     .trim()
     .required('Development Stage is required'),
-  offeringSummary: yup.string().trim(),
   minInvestment: yup
     .number()
     .typeError('Amount is required')
@@ -248,8 +247,9 @@ const ProjectSchema = yup.object().shape({
       .required('Map Link is required')
       .url('Invalid Link'),
   }),
-  marketOverview: yup.string().trim(),
-  waterfallSummary: yup.string().trim(),
+  offeringSummary: yup.string().trim().required("Offering Summary is required"),
+  marketOverview: yup.string().trim().required('Market Overview is required'),
+  waterfallSummary: yup.string().trim().required('Waterfall Summary is required'),
 })
 
 export const MyOfferingAddEditScreen = () => {
@@ -533,7 +533,24 @@ export const MyOfferingAddEditScreen = () => {
         })
         return
       }
-
+      if (privateDocuments.length === 0) {
+        notification.error({
+          message: 'Cannot create an offer without the private documents.',
+        })
+        return
+      }
+      if (documents.length === 0) {
+        notification.error({
+          message: 'Cannot create an offer without the public documents.',
+        })
+        return
+      }
+      if (interestSchedules.length === 0) {
+        notification.error({
+          message: 'Cannot create an offer without the interest schedules.',
+        })
+        return
+      }
       const tempStages = stages.map((x) => ({
         name: x.name,
         subStages: x.subStages.map((y) => ({ name: y.name })),
@@ -1203,6 +1220,7 @@ export const MyOfferingAddEditScreen = () => {
               <RTEFormField
                 label="Offering Summary"
                 name="offeringSummary"
+                required
                 control={control}
                 errors={errors?.offeringSummary}
               />
@@ -1212,8 +1230,10 @@ export const MyOfferingAddEditScreen = () => {
             <div className="col-12">
               <RTEFormField
                 label="Waterfall Summary"
+                required
                 name="waterfallSummary"
                 control={control}
+                errors={errors?.waterfallSummary}
               />
             </div>
           </div>
@@ -1221,8 +1241,10 @@ export const MyOfferingAddEditScreen = () => {
             <div className="col-12">
               <RTEFormField
                 label="Market Overview"
+                required
                 name="marketOverview"
                 control={control}
+                errors={errors?.marketOverview}
               />
             </div>
           </div>

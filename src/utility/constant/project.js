@@ -33,7 +33,7 @@ export const OfferingTypes = [
     value: OfferingType.both,
     label: 'Both',
   },
-  {
+   {
     value: OfferingType.debtRisk,
     label: 'Debt With Risk',
   },

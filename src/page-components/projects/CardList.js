@@ -23,6 +23,7 @@ const CardCoverBlock = styled.div`
     display: flex;
     width: 293px;
     position: relative;
+	height: 100%;
 
 	@media screen and (max-width: 767px) {
 		width: 100%;
@@ -115,8 +116,9 @@ const TitleWrap = styled.div`
 
 export function CardList({ item,isLoggedIn,toggleFav }) {
 	return (
-		<Link to={`details/${item._id}`}>
+		<div>
 			<CustomCardList>
+				<Link to={`details/${item._id}`}>
 				<CardCoverBlock>
 					<CardImage src={item.coverImage?.url} alt={item.name} />
 					<WishlistBlock>
@@ -127,28 +129,31 @@ export function CardList({ item,isLoggedIn,toggleFav }) {
 						/>}
 					</WishlistBlock>
 				</CardCoverBlock>
+				</Link>
 				<CardBodyBlock>
-					<TitleWrap className="d-flex justify-content-between mb-3">
-						<div>
-							<Title>
-								{item.name}
-								<StatusTag
-									status={item.status}
-									date={item.transactionCloseDate}
-								/>
-							</Title>
-							<AddressText>{item.addressLocation}</AddressText>
-						</div>
-						<Price>
-							{CommonUtility.currencyFormat(item.totalDevelopmentCost)}
-						</Price>
-					</TitleWrap>
-					<PropBlockWrap className="mb-3 mb-sm-3 mb-md-2 d-flex flex-wrap">
-						<PropBlockInn>
-							<PropertyInfoBlock name="Asset Type:" value={item.assetType} />
-						</PropBlockInn>
-						{item.leedCertified && <PropBlockInn><PropertyInfoBlock name="LEED Certified:" value={CommonUtility.toTitleCase(item.leedCertified)} /></PropBlockInn>}{item.title && <PropBlockInn><PropertyInfoBlock name="Title:" value={item.title} /></PropBlockInn>}
-					</PropBlockWrap>
+					<Link to={`details/${item._id}`}>
+						<TitleWrap className="d-flex justify-content-between mb-3">
+							<div>
+								<Title>
+									{item.name}
+									<StatusTag
+										status={item.status}
+										date={item.transactionCloseDate}
+									/>
+								</Title>
+								<AddressText>{item.addressLocation}</AddressText>
+							</div>
+							<Price>
+								{CommonUtility.currencyFormat(item.totalDevelopmentCost)}
+							</Price>
+						</TitleWrap>
+						<PropBlockWrap className="mb-3 mb-sm-3 mb-md-2 d-flex flex-wrap">
+							<PropBlockInn>
+								<PropertyInfoBlock name="Asset Type:" value={item.assetType} />
+							</PropBlockInn>
+							{item.leedCertified && <PropBlockInn><PropertyInfoBlock name="LEED Certified:" value={CommonUtility.toTitleCase(item.leedCertified)} /></PropBlockInn>}{item.title && <PropBlockInn><PropertyInfoBlock name="Title:" value={item.title} /></PropBlockInn>}
+						</PropBlockWrap>
+					</Link>
 					<div>
 						<DevelopmentBLock
 							common="border-right"
@@ -177,6 +182,6 @@ export function CardList({ item,isLoggedIn,toggleFav }) {
 					</div>
 				</CardBodyBlock>
 			</CustomCardList>
-		</Link>
+		</div>
 	)
 }

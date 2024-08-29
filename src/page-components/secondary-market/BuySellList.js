@@ -129,9 +129,9 @@ export const SellList = ({
         render: (_, record) =>
           `${CommonUtility.currencyFormat(
             (record?.value || 0) *
-              (record?.equityPledge
-                ? record?.equityPledge?.tokenCount || 0
-                : record?.debtPledge?.tokenCount || 0),
+            (record?.equityPledge
+              ? record?.equityPledge?.tokenCount || 0
+              : record?.debtPledge?.tokenCount || 0),
           )}`,
       },
       {

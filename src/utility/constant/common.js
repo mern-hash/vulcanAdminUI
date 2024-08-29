@@ -42,6 +42,7 @@ export const WalletTxTypeKey = {
   dividend: "dividend",
   waitingList: "waitingList",
   debtDividend: "debtDividend",
+  secondaryMarket: "secondaryMarket",
 }
 
 export const TxStatusKey = {
@@ -79,6 +80,7 @@ export const TransactionTypes = {
   [WalletTxTypeKey.dividend]: 'Dividend',
   [WalletTxTypeKey.debtDividend]: 'Debt Divident',
   [WalletTxTypeKey.refund]: 'Refund',
+  [WalletTxTypeKey.secondaryMarket]: "Secondary Market",
 }
 
 export const AuthStatus = {

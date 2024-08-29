@@ -1,13 +1,42 @@
-import { Input, Select } from 'antd'
+import { AutoComplete, Input, Select } from 'antd'
 import { PrimaryButton } from 'elements'
-import { GetProjectSearch } from 'hooks'
+import { GetProjectSearch, useDebounce } from 'hooks'
 import { useMemo, useState } from 'react'
+import styled from 'styled-components'
 import {
   CommonUtility,
   TxStatusKey,
   TransactionTypes,
   WalletTxTypeKey,
 } from 'utility'
+
+const CustomBlock = styled.div`
+  display: flex;
+  margin: 1rem auto;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+
+    .gap-2 {
+      margin-top: 20px;
+    }
+  }
+`
+
+const MobileFull = styled.div`
+  width: 25%;
+  padding-right: 10px;
+  .ant-input,
+  .ant-select {
+    width: 100% !important;
+    margin: 0px !important;
+  }
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    margin-bottom: 10px;
+    padding-right: 0px;
+  }
+`
 
 export const TransactionListHeader = ({
   hideProjectName,
@@ -16,6 +45,17 @@ export const TransactionListHeader = ({
   filterChanged,
   isSponsor,
 }) => {
+  const [searchProject, setSearchProject] = useState('')
+  const [search, setSearch] = useState({
+    email: '',
+    projectId: null,
+    id: '',
+    transactionTypes: [],
+    statusList: [],
+  })
+  const finalSearch = useDebounce(searchProject, 1000)
+  const { data, loading } = GetProjectSearch(finalSearch)
+
   const txTypes = useMemo(
     () =>
       Object.keys(TransactionTypes)
@@ -41,9 +81,6 @@ export const TransactionListHeader = ({
       })),
     [],
   )
-  const [searchProject, setSearchProject] = useState('')
-
-  const { data, loading } = GetProjectSearch(searchProject)
 
   const options = useMemo(
     () =>
@@ -54,19 +91,16 @@ export const TransactionListHeader = ({
     [data],
   )
 
-  const [search, setSearch] = useState({
-    email: '',
-    projectId: null,
-    id: '',
-    transactionTypes: [],
-    statusList: [],
-  })
-
   const inputChanged = (key, value) => {
     setSearch({
       ...search,
       [key]: value,
     })
+    if (key === 'projectId') {
+      setSearchProject(
+        options?.find((ele) => ele.value === value)?.label || '',
+      )
+    }
   }
 
   const reset = () => {
@@ -82,57 +116,59 @@ export const TransactionListHeader = ({
   }
 
   return (
-    <div
-      direction="horizontal"
-      size="middle"
-      style={{ display: 'flex', margin: '1rem auto' }}
-    >
-      <div className="d-flex flex-fill align-items-center">
+    <CustomBlock direction="horizontal" size="middle">
+      <div className="d-flex flex-fill align-items-center flex-wrap">
         {!hideProjectName && (
-          <Select
-            className="flex-fill"
-            showSearch
-            value={search.projectId}
-            placeholder="Search Offering"
-            defaultActiveFirstOption={false}
-            suffixIcon={null}
-            filterOption={false}
-            onSearch={setSearchProject}
-            onChange={(value) => inputChanged('projectId', value)}
-            notFoundContent={null}
-            options={options}
-            loading={loading}
-          />
+          <MobileFull>
+            <AutoComplete
+              className="flex-fill"
+              showSearch
+              value={searchProject}
+              placeholder="Search Offering"
+              suffixIcon={null}
+              onSearch={setSearchProject}
+              onSelect={(value) => inputChanged('projectId', value)}
+              notFoundContent={null}
+              options={options}
+              loading={loading}
+            />
+          </MobileFull>
         )}
 
         {!hideEmail && (
-          <Input
-            style={{ width: 'unset', height: '32px' }}
-            placeholder="Enter Email"
-            className="mx-2 flex-fill"
-            value={search.email}
-            onChange={(e) => inputChanged('email', e.target.value)}
-          />
+          <MobileFull>
+            <Input
+              style={{ width: 'unset', height: '32px' }}
+              placeholder="Enter Email"
+              className="mx-2 flex-fill"
+              value={search.email}
+              onChange={(e) => inputChanged('email', e.target.value)}
+            />
+          </MobileFull>
         )}
 
         {!hideTransactionType && (
-          <Select
-            placeholder="Transaction Type"
-            className="mx-2 flex-fill"
-            onChange={(e) => inputChanged('transactionTypes', e)}
-            options={txTypes}
-            value={search.transactionTypes}
-            mode="multiple"
-          />
+          <MobileFull>
+            <Select
+              placeholder="Transaction Type"
+              className="mx-2 flex-fill"
+              onChange={(e) => inputChanged('transactionTypes', e)}
+              options={txTypes}
+              value={search.transactionTypes}
+              mode="multiple"
+            />
+          </MobileFull>
         )}
-        <Select
-          placeholder="Transaction Status"
-          className="mx-2 flex-fill"
-          onChange={(e) => inputChanged('statusList', e)}
-          options={txStatuses}
-          mode="multiple"
-          value={search.statusList}
-        />
+        <MobileFull>
+          <Select
+            placeholder="Transaction Status"
+            className="mx-2 flex-fill"
+            onChange={(e) => inputChanged('statusList', e)}
+            options={txStatuses}
+            mode="multiple"
+            value={search.statusList}
+          />
+        </MobileFull>
       </div>
       <div className="d-flex gap-2">
         <PrimaryButton className="ml-2" onClick={() => filterChanged(search)}>
@@ -142,6 +178,6 @@ export const TransactionListHeader = ({
           Reset
         </PrimaryButton>
       </div>
-    </div>
+    </CustomBlock>
   )
 }

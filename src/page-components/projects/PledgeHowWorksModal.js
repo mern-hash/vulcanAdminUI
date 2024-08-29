@@ -46,42 +46,37 @@ export const PledgeHowWorksModal = ({ open, closeModal }) => {
       ]}
     >
       <TermsPara>
-        <div>
-          <p>
-            By accessing this Website, accessible from Website.com, you are
-            agreeing to be bound by these Website Terms and Conditions of Use
-            and agree that you are responsible for the agreement with any
-            applicable local laws. If you disagree with any of these terms, you
-            are prohibited from accessing this site. The materials contained in
-            this Website are protected by copyright and trade mark law.
-          </p>
-          <h3>
-            Step 1 {'>'} Step 2 {'>'} Step 3 {'>'} Step 4 {'>'} Step 5 {'>'}{' '}
-            Step 6
-          </h3>
-          <p>
-            Permission is granted to temporarily download one copy of the
-            materials on Company Name's Website for personal, non-commercial
-            transitory viewing only. This is the grant of a license, not a
-            transfer of title, and under this license you may not: Permission is
-            granted to temporarily download one copy of the materials on Company
-            Name's Website for personal, non-commercial transitory viewing only.
-            This is the grant of a license, not a transfer of title, and under
-            this license you may not:
-          </p>
-          <p>
-            Permission is granted to temporarily download one copy of the
-            materials on Company Name's Website for personal, non-commercial
-            transitory viewing only. This is the grant of a license, not a
-            transfer of title, and under this license you may not:
-          </p>
-          <p>
-            Permission is granted to temporarily download one copy of the
-            materials on Company Name's Website for personal, non-commercial
-            transitory viewing only. This is the grant of a license, not a
-            transfer of title, and under this license you may not:
-          </p>
-        </div>
+        <h3>1. Terms</h3>
+        <p>
+          By accessing this Website, you agree to be bound by these Terms and
+          Conditions of Use and accept responsibility for compliance with any
+          applicable local laws. If you disagree with any of these terms, you
+          are prohibited from using or accessing this site. The materials
+          contained on this Website are protected by copyright and trademark
+          law.
+        </p>
+
+        <h3>2. Use License</h3>
+        <p>
+          Permission is granted to temporarily download one copy of the
+          materials on Realios's Website for personal, non-commercial transitory
+          viewing only. This is the grant of a license, not a transfer of title,
+          and under this license, you may not: modify or copy the materials; use
+          the materials for any commercial purpose; attempt to decompile or
+          reverse engineer any software contained on the Website; or transfer
+          the materials to another person or "mirror" the materials on any other
+          server.
+        </p>
+
+        <h3>3. Revisions and Governing Law</h3>
+        <p>
+          Realios may revise these Terms of Use for its Website at any time
+          without notice. By using this Website, you are agreeing to be bound by
+          the then-current version of these Terms and Conditions of Use. Any
+          claim relating to Realios's Website shall be governed by the laws of
+          the Company's operating jurisdiction without regard to its conflict of
+          law provisions.
+        </p>
       </TermsPara>
     </PledgeModal>
   )

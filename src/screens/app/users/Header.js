@@ -13,6 +13,21 @@ import { CircleWavyCheck } from 'phosphor-react'
 const DetailsMain = styled.div`
   margin-bottom: 24px;
 
+  @media screen and (max-width: 767px) {
+    flex-wrap: wrap;
+
+    > div{
+      width: 100%;
+
+      + div{
+        margin-top: 16px;
+      }
+    }
+    .right{
+      padding-left: 0px !important;
+    }
+  }
+
   &.border-bottom {
     border-bottom: 1px solid ${({ theme }) => theme.colors.gray100};
     padding-bottom: 24px;

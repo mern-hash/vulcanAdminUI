@@ -356,6 +356,10 @@ export function HeaderBar() {
     [],
   )
 
+  const sidebarClose = () => {
+    document.body.classList.remove('mobile-menu-open')
+  }
+
   const onSearchSelect = (item) => {
     navigate(`/app/projects/details/${item}`)
     setSearch('')
@@ -394,11 +398,15 @@ export function HeaderBar() {
         <Col sm={24} md={14} lg={16}>
           <div className="head-right-block d-flex justify-content-end">
             <MobileBlock>
-              <MobileMenu
-                onClick={() => document.body.classList.add('mobile-menu-open')}
-              >
-                <List size={24} />
-              </MobileMenu>
+              {!CommonUtility.isUserLoggedIn(authStatus) && (
+                <MobileMenu
+                  onClick={() =>
+                    document.body.classList.add('mobile-menu-open')
+                  }
+                >
+                  <List size={24} />
+                </MobileMenu>
+              )}
               <NavLink to="/">
                 <Logo src={Images.logo} alt="Logo" height={30} />
               </NavLink>
@@ -462,7 +470,7 @@ export function HeaderBar() {
                   <></>
                 ) : (
                   <li>
-                    <Link to={`/login${window.location.search}`}>Login</Link>
+                    <Link onClick={() => sidebarClose()} to={`/login${window.location.search}`}>Login</Link>
                   </li>
                 )}
               </NavList>

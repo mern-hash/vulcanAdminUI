@@ -26,7 +26,7 @@ const initialSearch = {
   assetType: [],
   status: [],
   addressLocation: 'all',
-  projectMixStatus: [],
+  projectMixStatus: ['available'],
 }
 
 export const GetProjectsHook = (ownerOnly, tab = ProjectFilters.all) => {
@@ -63,6 +63,7 @@ export const GetProjectsHook = (ownerOnly, tab = ProjectFilters.all) => {
           ownerOnly,
           totalPerPage: filter.totalPerPage,
           pageNumber: filter.pageNumber,
+          search: filter.search,
         }
         if (filter.sort) {
           params.sort = filter.sort
@@ -280,6 +281,9 @@ export const GetApprovedProjectsHook = (currentTab) => {
   const [filter, setFilter] = useState({
     totalPerPage: 12,
     pageNumber: 1,
+    searchFilter: {
+      projectMixStatus: ['available'],
+    },
   })
 
   const [searchFilter, setSearchFilter] = useState(initialSearch)
@@ -318,44 +322,50 @@ export const GetApprovedProjectsHook = (currentTab) => {
           totalPerPage: filter.totalPerPage,
           pageNumber: filter.pageNumber,
         }
+        console.log(filter)
         if (filter.searchFilter) {
           let builder = new ProjectFilterBuilder()
-          if (filter.searchFilter.assetType.length > 0) {
+          if ((filter.searchFilter?.assetType || []).length > 0) {
             builder = builder.assetTypeIn(filter.searchFilter.assetType)
           }
-          if (filter.searchFilter.projectType.length > 0) {
+          if ((filter.searchFilter?.projectType || []).length > 0) {
             builder = builder.projectTypeIn(filter.searchFilter.projectType)
           }
-          if (filter.searchFilter.isDefault.length > 0) {
+          if ((filter.searchFilter?.isDefault || []).length > 0) {
             builder = builder.isDefaultIn(filter.searchFilter.isDefault)
           }
-          if (filter.searchFilter.offeringType.length > 0) {
+          if ((filter.searchFilter?.offeringType || []).length > 0) {
             builder = builder.offeringTypeIn(filter.searchFilter.offeringType)
           }
-          if (filter.searchFilter.primaryVsSecondary.length > 0) {
+          if ((filter.searchFilter?.primaryVsSecondary || []).length > 0) {
             builder = builder.primaryVsSecondaryIn(
               filter.searchFilter.primaryVsSecondary,
             )
           }
           if (
-            filter.searchFilter.addressLocation &&
+            filter.searchFilter?.addressLocation &&
             filter.searchFilter.addressLocation !== 'all'
           ) {
             builder = builder.addressLocationEqual(
               filter.searchFilter.addressLocation,
             )
           }
-          builder = builder.projectedAppraisedAssetValueBetween(
-            filter.searchFilter.projectedAppraisedAssetValue[0],
-            filter.searchFilter.projectedAppraisedAssetValue[1],
-          )
-          builder = builder.totalDevelopmentCostBetween(
-            filter.searchFilter.totalDevelopmentCost[0],
-            filter.searchFilter.totalDevelopmentCost[1],
-          )
+          if (filter.searchFilter?.projectedAppraisedAssetValue) {
+            builder = builder.projectedAppraisedAssetValueBetween(
+              filter.searchFilter.projectedAppraisedAssetValue[0],
+              filter.searchFilter.projectedAppraisedAssetValue[1],
+            )
+          }
+          if (filter.searchFilter?.totalDevelopmentCost) {
+            builder = builder.totalDevelopmentCostBetween(
+              filter.searchFilter.totalDevelopmentCost[0],
+              filter.searchFilter.totalDevelopmentCost[1],
+            )
+          }
           if (
-            filter.searchFilter.equityRaisedPercentage[0] !== 0 ||
-            filter.searchFilter.equityRaisedPercentage[1] !== 100
+            filter.searchFilter?.equityRaisedPercentage &&
+            (filter.searchFilter.equityRaisedPercentage[0] !== 0 ||
+              filter.searchFilter.equityRaisedPercentage[1] !== 100)
           ) {
             builder = builder.equityRaisedPercentageBetween(
               CommonUtility.toDecimal(
@@ -366,14 +376,18 @@ export const GetApprovedProjectsHook = (currentTab) => {
               ),
             )
           }
-          builder = builder.targetedInvestorLeveredIrrBetween(
-            filter.searchFilter.targetedInvestorLeveredIrr[0],
-            filter.searchFilter.targetedInvestorLeveredIrr[1],
-          )
-          builder = builder.targetedEquityMultipleBetween(
-            filter.searchFilter.targetedEquityMultiple[0],
-            filter.searchFilter.targetedEquityMultiple[1],
-          )
+          if (filter.searchFilter.targetedInvestorLeveredIrr) {
+            builder = builder.targetedInvestorLeveredIrrBetween(
+              filter.searchFilter.targetedInvestorLeveredIrr[0],
+              filter.searchFilter.targetedInvestorLeveredIrr[1],
+            )
+          }
+          if (filter.searchFilter.targetedEquityMultiple) {
+            builder = builder.targetedEquityMultipleBetween(
+              filter.searchFilter.targetedEquityMultiple[0],
+              filter.searchFilter.targetedEquityMultiple[1],
+            )
+          }
 
           if ((filter.searchFilter.projectMixStatus || []).length > 0) {
             const tempStatus = filter.searchFilter.projectMixStatus[0]
@@ -448,7 +462,7 @@ export const GetApprovedProjectsHook = (currentTab) => {
   }
 
   const clearSearch = () => {
-    setSearchFilter({ ...initialSearch })
+    setSearchFilter({ ...initialSearch, projectMixStatus: [] })
     updateFilter('searchFilter', null)
   }
 
@@ -562,7 +576,7 @@ export const GetProjectSearch = (search) => {
       try {
         setLoading(true)
         const params = {
-          query: search,
+          query: search || "",
           totalPerPage: 5,
           pageNumber: 1,
         }
@@ -575,9 +589,7 @@ export const GetProjectSearch = (search) => {
         setLoading(false)
       }
     }
-    if (search) {
       fetch()
-    }
   }, [search])
 
   return {

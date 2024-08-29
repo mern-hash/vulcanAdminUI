@@ -105,8 +105,8 @@ export const SellModal = ({ data, open, closeModal }) => {
 
         <p>
           <small>
-            The system will automatically select the highest transaction within
-            that range.
+            {/* The system will automatically select the highest transaction within
+            that range. */}
           </small>
         </p>
       </Form>

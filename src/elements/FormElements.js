@@ -661,7 +661,6 @@ export function FormSelectionField({
   extraLabel,
   ...rest
 }) {
-  console.log("--options---",options)
   return (
     <Controller
       control={control}
@@ -1020,6 +1019,11 @@ export function RTEFormField({
             onChange={(value) => props.field.onChange(value)}
             {...rest}
           />
+            {errors && (
+            <DangerText className="danger">
+              {errors?.message}
+            </DangerText>
+          )}
         </Form.Item>
       )}
     />

@@ -59,6 +59,14 @@ class ProjectTransactions {
     return BaseService.post(`${APIPath.payRemainingDues}/${id}`,data)
   }
 
+  investors(params, reqData) {
+    let url = APIPath.investors
+    if (params) {
+      url += `?${CommonUtility.objectToParams(params)}`
+    }
+    return BaseService.post(url, reqData)
+  }
+
 }
 const ProjectTransactionsService = new ProjectTransactions()
 Object.freeze(ProjectTransactionsService)

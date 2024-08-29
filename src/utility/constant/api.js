@@ -26,6 +26,7 @@ export const APIPath = {
   investorCSV: 'project/investors/as/csv',
   transactionCSV: 'project/transactions/as/csv',
   refundProject: 'project-transactions/refund/project',
+  investors: 'project-transactions/get-all-investors',
 
   // Users
   users: 'users',

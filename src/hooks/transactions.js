@@ -606,3 +606,68 @@ export const GetOfferingInvestorTransactionsHook = (projectId) => {
     total,
   }
 }
+
+export const GetInvestorsHook = (projectId) => {
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [refresh, setRefresh] = useState(0)
+  // const [total, setTotal] = useState(0)
+  const [filter, setFilter] = useState({
+    totalPerPage: CommonConstant.defaultPageSize,
+    pageNumber: 1,
+  })
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setLoading(true)
+        const response = await ProjectTransactionsService.investors(
+          {
+            projectId,
+          },
+          {
+            ...filter,
+          },
+        )
+        // console.log('response', response)
+        setData(response)
+        // setTotal(response.total)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    if (projectId) {
+      fetch()
+    }
+  }, [projectId, filter, refresh])
+
+  const refreshData = () => {
+    setRefresh(Math.random())
+  }
+
+  const pageChanged = (page, pageSize) => {
+    if (pageSize !== filter.totalPerPage) {
+      setFilter({
+        ...filter,
+        totalPerPage: pageSize,
+        pageNumber: 1,
+      })
+    } else {
+      setFilter({
+        ...filter,
+        pageNumber: page,
+      })
+    }
+  }
+
+  return {
+    data,
+    loading,
+    refreshData,
+    filter,
+    pageChanged,
+    // total,
+  }
+}
