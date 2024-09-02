@@ -74,7 +74,51 @@ const BottomButtonWrapper = styled.div`
     width: 100%;
   }
 `
-
+const AcknowledgementWrapper = styled.div`
+  h5.Title {
+    font-size: 16px;
+  }
+  p.SubTitle {
+    font-size: 14px;
+    color: #848484;
+  }
+  p.SmallSubTitle {
+    font-size: 12px;
+    color: #848484;
+  }
+  .CheckBoxWrapper {
+    width: 100%;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    &::after {
+      display: none;
+    }
+    .ant-checkbox-checked .ant-checkbox-inner {
+      background-color: #312438;
+      border-color: #312438 !important;
+    }
+    span {
+      padding: 0;
+      &.ant-checkbox {
+        &:hover {
+          .ant-checkbox-inner {
+            border-color: #312438;
+          }
+        }
+      }
+    }
+  }
+  .ShortNameWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    input {
+      width: 160px;
+    }
+  }
+`
 const BuyModal = ({ openDrawer, setOpenDrawer }) => {
   const [reviewing, setReviewing] = useState(false)
   const [securing, setSecuring] = useState(false)
@@ -164,62 +208,44 @@ const BuyModal = ({ openDrawer, setOpenDrawer }) => {
 
 const AcknowledgementSection = ({ initials, setInitials }) => (
   <>
-    <div className="mb-3">
-      <label className="form-label">Please acknowledge and sign</label>
-      <div className="form-check">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="readAndApprove"
-          required
-        />
-        <label className="form-check-label" htmlFor="readAndApprove">
-          I have read and approve
-        </label>
-      </div>
-    </div>
+    <AcknowledgementWrapper>
+      <h5 className="Title mb-1">Please acknowledge and sign</h5>
+      <Checkbox className="CheckBoxWrapper">I have read and approve</Checkbox>
+      <Divider
+        variant="solid"
+        style={{ marginTop: '16px', marginBottom: '16px' }}
+      />
 
-    <Divider />
-
-    <div className="mb-3">
-      <p className="mb-2">
+      <p className="SubTitle">
         I am investing with the intention of holding my securities for the
         target investment period, and that Arrived will{' '}
         <strong>not offer refunds</strong> on my investment outside of the
         24-hour cancellation window. To learn more about liquidity, check out
         this <a href="#">FAQ</a>.
       </p>
-      <div className="form-check">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="understand"
+      <Checkbox className="CheckBoxWrapper">I understand</Checkbox>
+      <Divider
+        variant="solid"
+        style={{ marginTop: '16px', marginBottom: '16px' }}
+      />
+
+      <div className="ShortNameWrapper">
+        <h5 className="Title mb-0">Your first and last name initials (MA)</h5>
+        <Input
+          type="text"
+          className="form-control"
+          id="initials"
+          value={initials}
+          onChange={(e) => setInitials(e.target.value)}
+          placeholder="MA"
           required
         />
-        <label className="form-check-label" htmlFor="understand">
-          I understand
-        </label>
       </div>
-    </div>
-
-    <Divider />
-
-    <div className="mb-3">
-      <label htmlFor="initials" className="form-label">
-        Your first and last name initials (MA)
-      </label>
-      <input
-        type="text"
-        className="form-control"
-        id="initials"
-        value={initials}
-        onChange={(e) => setInitials(e.target.value)}
-        placeholder="MA"
-        required
+      <Divider
+        variant="solid"
+        style={{ marginTop: '16px', marginBottom: '16px' }}
       />
-    </div>
-    <p>
-      <small>
+      <p className="SmallSubTitle">
         By clicking "Confirm Order" button: I adopt the above electronic
         initials as my signature, and hereby electronically sign the documents
         listed above. I acknowledge that I have accessed, have read and hereby
@@ -227,8 +253,8 @@ const AcknowledgementSection = ({ initials, setInitials }) => (
         services, in the manner designated therein, to process the documents and
         signatures provided herewith and to create, store, and communicate
         electronic records of documents listed above.
-      </small>
-    </p>
+      </p>
+    </AcknowledgementWrapper>
   </>
 )
 
