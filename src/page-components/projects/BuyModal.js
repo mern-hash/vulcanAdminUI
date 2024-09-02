@@ -290,7 +290,7 @@ const InvestmentDetails = () => (
       />
       <div className="flex-grow-1">
         <div className="small">The Sedgefield</div>
-        <div className="small text-muted">10 shares at $10.00/share</div>
+        <div className="small text-grey">10 shares at $10.00/share</div>
       </div>
       <div className="small">$100.00</div>
     </div>
