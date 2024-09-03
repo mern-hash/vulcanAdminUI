@@ -129,16 +129,23 @@ const BuyModal = ({ openDrawer, setOpenDrawer }) => {
   const [reviewing, setReviewing] = useState(false)
   const [securing, setSecuring] = useState(false)
   const [initials, setInitials] = useState('')
+  const [progress, setProgress] = useState(20)
 
   const handleReviewClick = () => {
-    if (reviewing) setSecuring(true)
-    else setReviewing(true)
+    if (reviewing) {
+      setProgress(70)
+      setSecuring(true)
+    } else setReviewing(true)
   }
 
   const handleConfirmOrder = () => {
-    setSecuring(false)
-    setReviewing(false)
-    setOpenDrawer(false)
+    setProgress(99)
+    setTimeout(() => {
+      setSecuring(false)
+      setReviewing(false)
+      setOpenDrawer(false)
+      setProgress(20)
+    }, 2000)
   }
 
   return (
@@ -150,7 +157,7 @@ const BuyModal = ({ openDrawer, setOpenDrawer }) => {
       style={{ marginRight: '15px', top: '15px' }}
     >
       <Progress
-        percent={50}
+        percent={progress}
         showInfo={false}
         width={100}
         strokeColor="#312438"

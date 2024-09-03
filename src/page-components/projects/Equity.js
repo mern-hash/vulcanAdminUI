@@ -215,11 +215,11 @@ export const Equity = ({ data, checkWallet }) => {
           <PrimaryButton onClick={() => setOpenDrawer(true)}>
             click
           </PrimaryButton>
-          {/* <BuyModal openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} /> */}
-          <TransactionDetailsModal
+          <BuyModal openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+          {/* <TransactionDetailsModal
             openDrawer={openDrawer}
             setOpenDrawer={setOpenDrawer}
-          />
+          /> */}
           <TrasactionDate className="text-center mt-3 mb-0">
             Transaction Close Date:{' '}
             <strong>
