@@ -67,6 +67,12 @@ const InvestmentSummaryWrapper = styled.div`
       width: 200px;
     }
   }
+  .InvestmentBox {
+    background-color: #3124380a;
+  }
+  .TotalAmountBox {
+    background-color: #3124380a;
+  }
 `
 
 const BottomButtonWrapper = styled.div`
@@ -265,11 +271,11 @@ const ReviewSection = () => (
       <Input /> of $9.30
     </div>
     <Divider variant="dotted" />
-    <div className="bg-dark text-white p-3 rounded mb-3">
+    <div className="InvestmentBox text-black p-3 rounded mb-3">
       <div className="h5 mb-3">Investment Summary</div>
       <InvestmentDetails />
     </div>
-    <div className="bg-dark text-white p-3 rounded mb-3">
+    <div className="TotalAmountBox text-black p-3 rounded mb-3">
       <div className="d-flex justify-content-between align-items-center">
         <div className="small fw-bold">Total Amount</div>
         <div className="h4 fw-bold">$100.00</div>
