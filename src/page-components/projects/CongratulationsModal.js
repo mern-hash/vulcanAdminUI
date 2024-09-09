@@ -48,8 +48,6 @@ const CongratulationsBodyWrapper = styled.div`
     }
   }
   .OrderStatusBox {
-    padding-top: 40px;
-    // transition: transform 0.5s ease, opacity 0.5s ease;
     animation: 3s alternate ShowIn;
     @keyframes ShowIn {
       from {

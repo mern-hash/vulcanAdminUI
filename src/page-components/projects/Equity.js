@@ -116,6 +116,7 @@ export const Equity = ({ data, checkWallet }) => {
   })
 
   const tokenCount = watch('tokenCount')
+  console.log('data', data)
 
   const save = async (formData) => {
     setInvestData({
@@ -216,15 +217,21 @@ export const Equity = ({ data, checkWallet }) => {
           <PrimaryButton onClick={() => setOpenDrawer(true)}>
             click
           </PrimaryButton>
-          {/* <BuyModal openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} /> */}
+          <BuyModal
+            openDrawer={openDrawer}
+            setOpenDrawer={setOpenDrawer}
+            sharePrice={data.equityTokenInfo?.tokenPrice}
+            submit={save}
+            projectName={data.name}
+          />
           {/* <TransactionDetailsModal
             openDrawer={openDrawer}
             setOpenDrawer={setOpenDrawer}
           /> */}
-          <CongratulationsModal
+          {/* <CongratulationsModal
             openDrawer={openDrawer}
             setOpenDrawer={setOpenDrawer}
-          />
+          /> */}
           <TrasactionDate className="text-center mt-3 mb-0">
             Transaction Close Date:{' '}
             <strong>

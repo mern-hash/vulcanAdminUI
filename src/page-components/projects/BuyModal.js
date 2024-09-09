@@ -1,8 +1,9 @@
 /* eslint-disable */
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Modal, Input, Divider, Checkbox, Progress, Button } from 'antd'
 import { PrimaryButton } from 'elements' // Assume this is your custom button component
 import styled from 'styled-components'
+import { CommonUtility } from 'utility'
 
 const InvestmentAmount = styled.div`
   > h6 {
@@ -125,21 +126,40 @@ const AcknowledgementWrapper = styled.div`
     }
   }
 `
-const BuyModal = ({ openDrawer, setOpenDrawer }) => {
+const BuyModal = ({
+  openDrawer,
+  setOpenDrawer,
+  sharePrice,
+  submit,
+  projectName,
+}) => {
   const [reviewing, setReviewing] = useState(false)
   const [securing, setSecuring] = useState(false)
   const [initials, setInitials] = useState('')
   const [progress, setProgress] = useState(20)
+  const [shareCount, setShareCount] = useState(null)
+  const [isAcknowledged, setIsAcknowledged] = useState({
+    checkbox1: false,
+    checkbox2: false,
+  })
+
+  // const inputRef = useRef('')
+
+  // useEffect(() => {
+  //   console.log('shareCount', shareCount)
+  // }, [shareCount])
 
   const handleReviewClick = () => {
-    if (reviewing) {
-      setProgress(70)
-      setSecuring(true)
-    } else setReviewing(true)
+    if (shareCount)
+      if (reviewing) {
+        setProgress(70)
+        setSecuring(true)
+      } else setReviewing(true)
   }
 
   const handleConfirmOrder = () => {
     setProgress(99)
+    submit({ tokenCOunt: shareCount })
     setTimeout(() => {
       setSecuring(false)
       setReviewing(false)
@@ -171,19 +191,24 @@ const BuyModal = ({ openDrawer, setOpenDrawer }) => {
                 style={{ marginTop: '16px', marginBottom: '16px' }}
               />
               <h6>Desired investment amount</h6>
-              <p>you can invest upto $35000 in the sledgfields</p>
+              <p>you can invest upto $35000 in the {projectName}</p>
               <Divider variant="solid" style={{ marginTop: '16px' }} />
-              <Input />
+              {/* <Input />
               <div className="PriceBoxWrapper">
                 <Button className="active">$100</Button>
                 <Button>$500</Button>
                 <Button>$1000</Button>
                 <Button>$2500</Button>
-              </div>
+              </div> */}
               <Divider variant="dotted" style={{ marginBottom: '18px' }} />
               <Checkbox className="CheckBoxWrapper">Use cash balance</Checkbox>
               <div className="SecondInputWrapper">
-                <Input /> of $9.30
+                <Input
+                  type="number"
+                  status={shareCount ? '' : 'error'}
+                  onChange={(e) => setShareCount(parseInt(e.target.value))}
+                />{' '}
+                of {CommonUtility.currencyFormat(sharePrice)}
               </div>
               <Divider variant="dotted" />
             </InvestmentAmount>
@@ -195,13 +220,21 @@ const BuyModal = ({ openDrawer, setOpenDrawer }) => {
             <AcknowledgementSection
               initials={initials}
               setInitials={setInitials}
+              isAcknowledged={isAcknowledged}
+              setIsAcknowledged={setIsAcknowledged}
             />
           </>
         )}
 
         {/* <Progress percent={50} showInfo={false} width={100} /> */}
 
-        {reviewing && !securing && <ReviewSection />}
+        {reviewing && !securing && (
+          <ReviewSection
+            shareCount={shareCount}
+            sharePrice={sharePrice}
+            projectName={projectName}
+          />
+        )}
 
         <BottomButtonWrapper>
           {!securing ? (
@@ -209,7 +242,10 @@ const BuyModal = ({ openDrawer, setOpenDrawer }) => {
               {!reviewing ? 'Review Investment' : 'Secure Investment'}
             </PrimaryButton>
           ) : (
-            <PrimaryButton onClick={handleConfirmOrder}>
+            <PrimaryButton
+              onClick={handleConfirmOrder}
+              disabled={!(isAcknowledged.checkbox1 && isAcknowledged.checkbox2)}
+            >
               Confirm Order
             </PrimaryButton>
           )}
@@ -219,79 +255,105 @@ const BuyModal = ({ openDrawer, setOpenDrawer }) => {
   )
 }
 
-const AcknowledgementSection = ({ initials, setInitials }) => (
-  <>
-    <AcknowledgementWrapper>
-      <h5 className="Title mb-1">Please acknowledge and sign</h5>
-      <Checkbox className="CheckBoxWrapper">I have read and approve</Checkbox>
-      <Divider
-        variant="solid"
-        style={{ marginTop: '16px', marginBottom: '16px' }}
-      />
+const AcknowledgementSection = ({
+  initials,
+  setInitials,
+  isAcknowledged,
+  setIsAcknowledged,
+}) => {
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target
+    setIsAcknowledged((prev) => ({ ...prev, [name]: checked }))
+  }
 
-      <p className="SubTitle">
-        I am investing with the intention of holding my securities for the
-        target investment period, and that Arrived will{' '}
-        <strong>not offer refunds</strong> on my investment outside of the
-        24-hour cancellation window. To learn more about liquidity, check out
-        this <a href="#">FAQ</a>.
-      </p>
-      <Checkbox className="CheckBoxWrapper">I understand</Checkbox>
-      <Divider
-        variant="solid"
-        style={{ marginTop: '16px', marginBottom: '16px' }}
-      />
-
-      <div className="ShortNameWrapper">
-        <h5 className="Title mb-0">Your first and last name initials (MA)</h5>
-        <Input
-          type="text"
-          className="form-control"
-          id="initials"
-          value={initials}
-          onChange={(e) => setInitials(e.target.value)}
-          placeholder="MA"
-          required
+  const { checkbox1, checkbox2 } = isAcknowledged
+  return (
+    <>
+      <AcknowledgementWrapper>
+        <h5 className="Title mb-1">Please acknowledge and sign</h5>
+        <Checkbox
+          className="CheckBoxWrapper"
+          name="checkbox1"
+          checked={checkbox1}
+          onClick={handleCheckboxChange}
+        >
+          I have read and approve
+        </Checkbox>
+        <Divider
+          variant="solid"
+          style={{ marginTop: '16px', marginBottom: '16px' }}
         />
-      </div>
-      <Divider
-        variant="solid"
-        style={{ marginTop: '16px', marginBottom: '16px' }}
-      />
-      <p className="SmallSubTitle">
-        By clicking "Confirm Order" button: I adopt the above electronic
-        initials as my signature, and hereby electronically sign the documents
-        listed above. I acknowledge that I have accessed, have read and hereby
-        agree to the Arrived Terms of Service and that I authorize the Arrived
-        services, in the manner designated therein, to process the documents and
-        signatures provided herewith and to create, store, and communicate
-        electronic records of documents listed above.
-      </p>
-    </AcknowledgementWrapper>
-  </>
-)
 
-const ReviewSection = () => (
+        <p className="SubTitle">
+          I am investing with the intention of holding my securities for the
+          target investment period, and that Arrived will{' '}
+          <strong>not offer refunds</strong> on my investment outside of the
+          24-hour cancellation window. To learn more about liquidity, check out
+          this <a href="#">FAQ</a>.
+        </p>
+        <Checkbox
+          className="CheckBoxWrapper"
+          name="checkbox2"
+          checked={checkbox2}
+          onClick={handleCheckboxChange}
+        >
+          I understand
+        </Checkbox>
+        <Divider
+          variant="solid"
+          style={{ marginTop: '16px', marginBottom: '16px' }}
+        />
+
+        <div className="ShortNameWrapper">
+          <h5 className="Title mb-0">Your first and last name initials (MA)</h5>
+          <Input
+            type="text"
+            className="form-control"
+            id="initials"
+            value={initials}
+            onChange={(e) => setInitials(e.target.value)}
+            placeholder="MA"
+            required
+          />
+        </div>
+        <Divider
+          variant="solid"
+          style={{ marginTop: '16px', marginBottom: '16px' }}
+        />
+        <p className="SmallSubTitle">
+          By clicking "Confirm Order" button: I adopt the above electronic
+          initials as my signature, and hereby electronically sign the documents
+          listed above. I acknowledge that I have accessed, have read and hereby
+          agree to the Arrived Terms of Service and that I authorize the Arrived
+          services, in the manner designated therein, to process the documents
+          and signatures provided herewith and to create, store, and communicate
+          electronic records of documents listed above.
+        </p>
+      </AcknowledgementWrapper>
+    </>
+  )
+}
+
+const ReviewSection = ({ shareCount, sharePrice, projectName }) => (
   <InvestmentSummaryWrapper>
-    <Checkbox className="CheckBoxWrapper">Use cash balance</Checkbox>
-    <div className="SecondInputWrapper">
-      <Input /> of $9.30
-    </div>
-    <Divider variant="dotted" />
     <div className="InvestmentBox text-black p-3 rounded mb-3">
       <div className="h5 mb-3">Investment Summary</div>
-      <InvestmentDetails />
+      <InvestmentDetails
+        shareCount={shareCount}
+        sharePrice={sharePrice}
+        projectName={projectName}
+      />
     </div>
     <div className="TotalAmountBox text-black p-3 rounded mb-3">
       <div className="d-flex justify-content-between align-items-center">
         <div className="small fw-bold">Total Amount</div>
-        <div className="h4 fw-bold">$100.00</div>
+        <div className="h4 fw-bold">${shareCount * +sharePrice}</div>
       </div>
     </div>
   </InvestmentSummaryWrapper>
 )
 
-const InvestmentDetails = () => (
+const InvestmentDetails = ({ shareCount, sharePrice, projectName }) => (
   <>
     <div className="border-bottom mb-3"></div>
     <div className="d-flex align-items-center mb-3">
@@ -302,17 +364,19 @@ const InvestmentDetails = () => (
         style={{ width: '64px', height: '64px' }}
       />
       <div className="flex-grow-1">
-        <div className="small">The Sedgefield</div>
-        <div className="small text-grey">10 shares at $10.00/share</div>
+        <div className="small">{projectName}</div>
+        <div className="small text-grey">
+          {shareCount} shares at ${sharePrice}/share
+        </div>
       </div>
-      <div className="small">$100.00</div>
+      <div className="small">${shareCount * sharePrice}</div>
     </div>
     <div className="border-bottom mb-3"></div>
-    <div className="d-flex justify-content-between mb-3">
+    {/* <div className="d-flex justify-content-between mb-3">
       <div className="small">Payment Method</div>
       <div className="small">Business Adv Fundamentals - 2676</div>
       <div className="small">$100.00</div>
-    </div>
+    </div> */}
     <div className="border-bottom mb-3"></div>
     <div className="d-flex justify-content-between align-items-center">
       <div className="small">
