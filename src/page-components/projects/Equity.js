@@ -116,7 +116,6 @@ export const Equity = ({ data, checkWallet }) => {
   })
 
   const tokenCount = watch('tokenCount')
-  console.log('data', data)
 
   const save = async (formData) => {
     setInvestData({
@@ -135,6 +134,7 @@ export const Equity = ({ data, checkWallet }) => {
     if (result) {
       reset({})
       setOpenSuccessModal(true)
+      setOpenDrawer(false)
     }
     setOpenPledgeModal(false)
   }
@@ -179,7 +179,7 @@ export const Equity = ({ data, checkWallet }) => {
       </PrograssBlock>
       <ShareCalculatorBlock>
         <div className="p-3">
-          <SharePriceBlock>
+          {/* <SharePriceBlock>
             <SharePrice>
               {CommonUtility.currencyFormat(data.equityTokenInfo?.tokenPrice)}
               <span>per share</span>
@@ -195,35 +195,37 @@ export const Equity = ({ data, checkWallet }) => {
               defaultValue=""
               inputExtraClass="mb-4"
             />
-          </SharePriceBlock>
+          </SharePriceBlock> */}
           <InvestButton status={data?.status} date={data?.transactionCloseDate}>
             <InvestmentButton>
               <PrimaryButton
                 heightmedium={1}
                 full={1}
                 border8={1}
-                onClick={handleSubmit(save)}
+                // onClick={handleSubmit(save)}
+                onClick={() => setOpenDrawer(true)}
                 disabled={(data?.equityRaisedPercentage || 0) >= 100}
               >
                 Invest{' '}
-                {tokenCount
+                {/* {tokenCount
                   ? CommonUtility.currencyFormat(
                       (data.equityTokenInfo?.tokenPrice || 0) * tokenCount,
                     )
-                  : ''}
+                  : ''} */}
               </PrimaryButton>
             </InvestmentButton>
           </InvestButton>
-          <PrimaryButton onClick={() => setOpenDrawer(true)}>
-            click
-          </PrimaryButton>
-          <BuyModal
-            openDrawer={openDrawer}
-            setOpenDrawer={setOpenDrawer}
-            sharePrice={data.equityTokenInfo?.tokenPrice}
-            submit={save}
-            projectName={data.name}
-          />
+
+          {openDrawer && (
+            <BuyModal
+              openDrawer={openDrawer}
+              setOpenDrawer={setOpenDrawer}
+              sharePrice={data.equityTokenInfo?.tokenPrice}
+              submit={save}
+              projectName={data.name}
+              data={data}
+            />
+          )}
           {/* <TransactionDetailsModal
             openDrawer={openDrawer}
             setOpenDrawer={setOpenDrawer}

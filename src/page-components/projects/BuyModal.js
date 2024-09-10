@@ -1,9 +1,21 @@
 /* eslint-disable */
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { Modal, Input, Divider, Checkbox, Progress, Button } from 'antd'
-import { PrimaryButton } from 'elements' // Assume this is your custom button component
+import { MaskedNumberFormField, PrimaryButton } from 'elements' // Assume this is your custom button component
 import styled from 'styled-components'
 import { CommonUtility } from 'utility'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
+import { useAuth } from 'context'
+
+const EquitySchema = yup.object().shape({
+  tokenCount: yup
+    .number()
+    .typeError('Number of shares is required')
+    .required('Number of shares is required')
+    .positive('The number of shares must be greater than zero.'),
+})
 
 const InvestmentAmount = styled.div`
   > h6 {
@@ -132,22 +144,30 @@ const BuyModal = ({
   sharePrice,
   submit,
   projectName,
+  data,
 }) => {
+  const { currentUser } = useAuth()
+  const { coverImage } = data || {}
   const [reviewing, setReviewing] = useState(false)
   const [securing, setSecuring] = useState(false)
   const [initials, setInitials] = useState('')
   const [progress, setProgress] = useState(20)
-  const [shareCount, setShareCount] = useState(null)
   const [isAcknowledged, setIsAcknowledged] = useState({
     checkbox1: false,
     checkbox2: false,
   })
 
-  // const inputRef = useRef('')
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    watch,
+    reset,
+  } = useForm({
+    resolver: yupResolver(EquitySchema),
+  })
 
-  // useEffect(() => {
-  //   console.log('shareCount', shareCount)
-  // }, [shareCount])
+  const shareCount = watch('tokenCount')
 
   const handleReviewClick = () => {
     if (shareCount)
@@ -159,22 +179,40 @@ const BuyModal = ({
 
   const handleConfirmOrder = () => {
     setProgress(99)
-    submit({ tokenCOunt: shareCount })
-    setTimeout(() => {
+    submit({ tokenCount: +shareCount })
+  }
+
+  const handleModalClose = () => {
+    reset({})
+    setOpenDrawer(false)
+    setSecuring(false)
+    setReviewing(false)
+  }
+
+  useEffect(() => {
+    return () => {
+      setOpenDrawer(false)
       setSecuring(false)
       setReviewing(false)
-      setOpenDrawer(false)
+      setInitials('')
       setProgress(20)
-    }, 2000)
-  }
+    }
+  }, [])
+
+  const isAuthorizedInitial = useMemo(() => {
+    const user =
+      currentUser?.givenName?.charAt(0) + currentUser?.familyName?.charAt(0)
+    if (user.toLowerCase() == initials.toLowerCase()) return true
+    return false
+  }, [currentUser, initials])
 
   return (
     <Modal
       title="Buy"
       open={openDrawer}
-      onCancel={() => setOpenDrawer(false)}
+      onCancel={handleModalClose}
       footer={null}
-      style={{ marginRight: '15px', top: '15px' }}
+      style={{ marginRight: '15px', top: '15px', zIndex: '400 !important' }}
     >
       <Progress
         percent={progress}
@@ -193,21 +231,17 @@ const BuyModal = ({
               <h6>Desired investment amount</h6>
               <p>you can invest upto $35000 in the {projectName}</p>
               <Divider variant="solid" style={{ marginTop: '16px' }} />
-              {/* <Input />
-              <div className="PriceBoxWrapper">
-                <Button className="active">$100</Button>
-                <Button>$500</Button>
-                <Button>$1000</Button>
-                <Button>$2500</Button>
-              </div> */}
               <Divider variant="dotted" style={{ marginBottom: '18px' }} />
               <Checkbox className="CheckBoxWrapper">Use cash balance</Checkbox>
               <div className="SecondInputWrapper">
-                <Input
-                  type="number"
-                  status={shareCount ? '' : 'error'}
-                  onChange={(e) => setShareCount(parseInt(e.target.value))}
-                />{' '}
+                <MaskedNumberFormField
+                  control={control}
+                  name="tokenCount"
+                  placeholder="Enter Quantity"
+                  errors={errors?.tokenCount}
+                  defaultValue=""
+                  inputExtraClass="mb-4"
+                />
                 of {CommonUtility.currencyFormat(sharePrice)}
               </div>
               <Divider variant="dotted" />
@@ -226,25 +260,33 @@ const BuyModal = ({
           </>
         )}
 
-        {/* <Progress percent={50} showInfo={false} width={100} /> */}
-
         {reviewing && !securing && (
           <ReviewSection
             shareCount={shareCount}
             sharePrice={sharePrice}
             projectName={projectName}
+            coverImage={coverImage}
           />
         )}
 
         <BottomButtonWrapper>
           {!securing ? (
-            <PrimaryButton onClick={handleReviewClick}>
+            <PrimaryButton
+              type="submit"
+              onClick={handleSubmit(handleReviewClick)}
+            >
               {!reviewing ? 'Review Investment' : 'Secure Investment'}
             </PrimaryButton>
           ) : (
             <PrimaryButton
               onClick={handleConfirmOrder}
-              disabled={!(isAcknowledged.checkbox1 && isAcknowledged.checkbox2)}
+              disabled={
+                !(
+                  isAcknowledged.checkbox1 &&
+                  isAcknowledged.checkbox2 &&
+                  isAuthorizedInitial
+                )
+              }
             >
               Confirm Order
             </PrimaryButton>
@@ -264,6 +306,12 @@ const AcknowledgementSection = ({
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target
     setIsAcknowledged((prev) => ({ ...prev, [name]: checked }))
+  }
+
+  const handleInputChange = (event) => {
+    if (event.target.value.length <= 2) {
+      setInitials(event.target.value)
+    }
   }
 
   const { checkbox1, checkbox2 } = isAcknowledged
@@ -311,7 +359,7 @@ const AcknowledgementSection = ({
             className="form-control"
             id="initials"
             value={initials}
-            onChange={(e) => setInitials(e.target.value)}
+            onChange={handleInputChange}
             placeholder="MA"
             required
           />
@@ -334,7 +382,7 @@ const AcknowledgementSection = ({
   )
 }
 
-const ReviewSection = ({ shareCount, sharePrice, projectName }) => (
+const ReviewSection = ({ shareCount, sharePrice, projectName, coverImage }) => (
   <InvestmentSummaryWrapper>
     <div className="InvestmentBox text-black p-3 rounded mb-3">
       <div className="h5 mb-3">Investment Summary</div>
@@ -342,6 +390,7 @@ const ReviewSection = ({ shareCount, sharePrice, projectName }) => (
         shareCount={shareCount}
         sharePrice={sharePrice}
         projectName={projectName}
+        coverImage={coverImage}
       />
     </div>
     <div className="TotalAmountBox text-black p-3 rounded mb-3">
@@ -353,12 +402,17 @@ const ReviewSection = ({ shareCount, sharePrice, projectName }) => (
   </InvestmentSummaryWrapper>
 )
 
-const InvestmentDetails = ({ shareCount, sharePrice, projectName }) => (
+const InvestmentDetails = ({
+  shareCount,
+  sharePrice,
+  projectName,
+  coverImage,
+}) => (
   <>
     <div className="border-bottom mb-3"></div>
     <div className="d-flex align-items-center mb-3">
       <img
-        src="house_image_url_here"
+        src={coverImage?.url}
         alt="The Sedgefield"
         className="rounded me-3"
         style={{ width: '64px', height: '64px' }}
@@ -372,11 +426,7 @@ const InvestmentDetails = ({ shareCount, sharePrice, projectName }) => (
       <div className="small">${shareCount * sharePrice}</div>
     </div>
     <div className="border-bottom mb-3"></div>
-    {/* <div className="d-flex justify-content-between mb-3">
-      <div className="small">Payment Method</div>
-      <div className="small">Business Adv Fundamentals - 2676</div>
-      <div className="small">$100.00</div>
-    </div> */}
+
     <div className="border-bottom mb-3"></div>
     <div className="d-flex justify-content-between align-items-center">
       <div className="small">
