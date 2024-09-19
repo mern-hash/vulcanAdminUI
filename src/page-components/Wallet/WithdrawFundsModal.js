@@ -86,6 +86,7 @@ export const WithdrawFundsModal = ({ open, currentBalance, closeModal }) => {
               errors={errors?.value}
               name="value"
               label="Amount"
+              placeholder="Enter withdrawal amount"
             />
           </div>
         </div>

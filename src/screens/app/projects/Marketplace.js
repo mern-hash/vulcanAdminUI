@@ -285,7 +285,7 @@ export const ProjectSecondaryMarketplaceScreen = () => {
 
         <DetailContent>
           <div className="row">
-            <div className="col col-12 col-md-12 col-lg-12 col-xl-7 col-xxl-7 mb-md-3">
+            <div className="col col-12 col-md-12 col-lg-12 col-xl-7 col-xxl-7">
               <TableTitle>Sell</TableTitle>
               <BuyList
                 list={buyData}
@@ -306,7 +306,7 @@ export const ProjectSecondaryMarketplaceScreen = () => {
                 />
               </div>
             </div>
-            <div className="col col-12 col-md-12 col-lg-12 col-xl-5 col-xxl-5">
+            <div className="col col-12 col-md-12 col-lg-12 col-xl-5 col-xxl-5 my-3">
               <CustomTabComponent
                 items={tabs}
                 value={currentTab}

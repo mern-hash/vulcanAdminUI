@@ -18,7 +18,7 @@ export const ProfileChangePasswordScreen = () => {
     <div className="container">
       <SmallWithBLock>
         <CustomHeading
-          heading="Change Passsword"
+          heading="Change Password"
           subHeader="Fields marked with an asterisk (*) are required."
         />
         <ChangePassword

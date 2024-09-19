@@ -77,6 +77,7 @@ export const AddFundsModal = ({ open, closeModal }) => {
               errors={errors?.value}
               name="value"
               label="Amount"
+              placeholder="Enter the amount to add"
             />
           </div>
         </div>

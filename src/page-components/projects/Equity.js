@@ -7,15 +7,12 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import styled from 'styled-components'
 import { CommonUtility, DateFormat, DateUtility } from 'utility'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { PledgeModal } from './PledgeModal'
 import { SuccessModal } from './SuccessModal'
-import { InvestTermsOfSerivceModal } from './InvestTermsOfServiceModal'
 import { InvestButton } from './ComingSoonTag'
-import { Checkbox, Divider, Drawer, Input, Modal, Progress } from 'antd'
-import BuyModal from './BuyModal'
-import TransactionDetailsModal from './TransactionDetailsModal'
-import CongratulationsModal from './CongratulationsModal'
+import AcknowledgementModal from './AcknowledgementModal'
+// import { InvestTermsOfSerivceModal } from './InvestTermsOfServiceModal'
 
 const PrograssBlock = styled.div`
   padding: 16px;
@@ -101,21 +98,29 @@ export const Equity = ({ data, checkWallet }) => {
   const [openPledgeModal, setOpenPledgeModal] = useState(false)
   const [openSuccessModal, setOpenSuccessModal] = useState(false)
   const [openTermsModal, setOpenTermsModal] = useState(false)
-  const [reviewing, setReviewing] = useState(false)
-  const [securing, setSecuring] = useState(false)
   const [investData, setInvestData] = useState({})
-  const [openDrawer, setOpenDrawer] = useState(false)
   const {
-    control,
     formState: { errors },
     handleSubmit,
     watch,
     reset,
+    control
   } = useForm({
     resolver: yupResolver(EquitySchema),
   })
 
   const tokenCount = watch('tokenCount')
+  const avalaibleFund = useMemo(
+    () =>
+      (data?.equityTokenInfo?.tokenPrice || 0) *
+        (data?.equityTokenInfo?.totalTokens || 0) -
+      (data?.equityTokenInfo?.totalRaise || 0),
+    [data],
+  )
+  const disabledInvest = useMemo(
+    () => (data.equityTokenInfo?.tokenPrice || 0) * tokenCount > avalaibleFund,
+    [tokenCount, data, avalaibleFund],
+  )
 
   const save = async (formData) => {
     setInvestData({
@@ -134,7 +139,6 @@ export const Equity = ({ data, checkWallet }) => {
     if (result) {
       reset({})
       setOpenSuccessModal(true)
-      setOpenDrawer(false)
     }
     setOpenPledgeModal(false)
   }
@@ -154,13 +158,7 @@ export const Equity = ({ data, checkWallet }) => {
   return (
     <>
       <PrograssBlock>
-        <Price>
-          {CommonUtility.currencyFormat(
-            (data?.equityTokenInfo?.tokenPrice || 0) *
-              (data?.equityTokenInfo?.totalTokens || 0) -
-              (data?.equityTokenInfo?.totalRaise || 0),
-          )}
-        </Price>
+        <Price>{CommonUtility.currencyFormat(avalaibleFund)}</Price>
         <LabelText>Available</LabelText>
         <ProgressBar
           percent={data?.equityRaisedPercentage || 0}
@@ -179,7 +177,7 @@ export const Equity = ({ data, checkWallet }) => {
       </PrograssBlock>
       <ShareCalculatorBlock>
         <div className="p-3">
-          {/* <SharePriceBlock>
+        <SharePriceBlock>
             <SharePrice>
               {CommonUtility.currencyFormat(data.equityTokenInfo?.tokenPrice)}
               <span>per share</span>
@@ -195,45 +193,29 @@ export const Equity = ({ data, checkWallet }) => {
               defaultValue=""
               inputExtraClass="mb-4"
             />
-          </SharePriceBlock> */}
+          </SharePriceBlock>
           <InvestButton status={data?.status} date={data?.transactionCloseDate}>
             <InvestmentButton>
               <PrimaryButton
                 heightmedium={1}
                 full={1}
                 border8={1}
-                // onClick={handleSubmit(save)}
-                onClick={() => setOpenDrawer(true)}
-                disabled={(data?.equityRaisedPercentage || 0) >= 100}
+                onClick={handleSubmit(save)}
+                disabled={
+                  (data?.equityRaisedPercentage || 0) >= 100 || disabledInvest
+                }
               >
                 Invest{' '}
-                {/* {tokenCount
-                  ? CommonUtility.currencyFormat(
-                      (data.equityTokenInfo?.tokenPrice || 0) * tokenCount,
-                    )
-                  : ''} */}
+
               </PrimaryButton>
             </InvestmentButton>
           </InvestButton>
 
-          {openDrawer && (
-            <BuyModal
-              openDrawer={openDrawer}
-              setOpenDrawer={setOpenDrawer}
-              sharePrice={data.equityTokenInfo?.tokenPrice}
-              submit={save}
-              projectName={data.name}
-              data={data}
-            />
-          )}
-          {/* <TransactionDetailsModal
-            openDrawer={openDrawer}
-            setOpenDrawer={setOpenDrawer}
-          /> */}
-          {/* <CongratulationsModal
-            openDrawer={openDrawer}
-            setOpenDrawer={setOpenDrawer}
-          /> */}
+          <AcknowledgementModal
+            open={openTermsModal}
+            closeModal={closeTermsModal}
+          />
+
           <TrasactionDate className="text-center mt-3 mb-0">
             Transaction Close Date:{' '}
             <strong>
@@ -266,10 +248,10 @@ export const Equity = ({ data, checkWallet }) => {
         </PledgeSection>
       </ShareCalculatorBlock>
 
-      <InvestTermsOfSerivceModal
+      {/* <InvestTermsOfSerivceModal
         open={openTermsModal}
         closeModal={closeTermsModal}
-      />
+      /> */}
       <PledgeModal
         data={data}
         closeModal={closeModal}

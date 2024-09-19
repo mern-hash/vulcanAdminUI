@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormSliderField, MaskedNumberFormField, PrimaryButton } from 'elements'
 import { X } from 'phosphor-react'
@@ -12,7 +11,6 @@ import { SuccessModal } from './SuccessModal'
 import { InvestmentButton } from 'components'
 import { Alert } from 'antd'
 import { InvestButton } from './ComingSoonTag'
-import BuyModal from './BuyModal'
 
 const ShareCalculatorBlock = styled.div`
   border-bottom-left-radius: 8px;
@@ -72,7 +70,6 @@ export const Debt = ({ data, checkWallet }) => {
   const [debtData, setDebtData] = useState({})
   const [openSuccessModal, setOpenSuccessModal] = useState(false)
   const [showSlider, setShowSlider] = useState(false)
-  const [openDrawer, setOpenDrawer] = useState(false)
 
   const {
     control,
@@ -111,7 +108,6 @@ export const Debt = ({ data, checkWallet }) => {
     if (result) {
       reset({})
       setOpenSuccessModal(true)
-      setOpenDrawer(false)
     }
     setOpenDebtModal(false)
   }
@@ -125,7 +121,7 @@ export const Debt = ({ data, checkWallet }) => {
     <>
       <ShareCalculatorBlock>
         <div className="p-3">
-          {/* <SharePriceBlock className="mb-4">
+        <SharePriceBlock className="mb-4">
             <SharePrice>
               {CommonUtility.currencyFormat(data?.debtTokenInfo?.tokenPrice)}
               <span>per share</span>
@@ -139,7 +135,7 @@ export const Debt = ({ data, checkWallet }) => {
               errors={errors?.tokenCount}
               inputExtraClass="mb-0"
             />
-          </SharePriceBlock> */}
+          </SharePriceBlock>
           {showSlider ? (
             <>
               <FormSliderField
@@ -173,8 +169,7 @@ export const Debt = ({ data, checkWallet }) => {
                 heightmedium={1}
                 full={1}
                 border8={1}
-                // onClick={handleSubmit(save)}
-                onClick={() => setOpenDrawer(true)}
+                onClick={handleSubmit(save)}
               >
                 Invest{' '}
                 {tokenCount
@@ -229,16 +224,6 @@ export const Debt = ({ data, checkWallet }) => {
           )}
         </PledgeSection>
       </ShareCalculatorBlock>
-      {openDrawer && (
-        <BuyModal
-          openDrawer={openDrawer}
-          setOpenDrawer={setOpenDrawer}
-          sharePrice={data?.debtTokenInfo?.tokenPrice}
-          submit={save}
-          projectName={data.name}
-          data={data}
-        />
-      )}
       <DebtModal
         data={data}
         closeModal={closeModal}

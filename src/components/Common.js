@@ -98,7 +98,7 @@ export const BackArrow = (props) => {
 
   return (
     <BackArrowStyled onClick={() => props.onClick ? props.onClick() : goBack()}>
-      <ArrowLeft />
+      {props?.showArrow === undefined && <ArrowLeft />}
       {props?.backText ? props.backText : 'Go back'}
     </BackArrowStyled>
   )

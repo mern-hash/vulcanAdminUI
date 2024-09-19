@@ -164,7 +164,7 @@ export const SystemSettingsScreen = () => {
               <FormCheckBoxField
                 name="disableAllInvestButtons"
                 control={control}
-                text="Disabled All Investment"
+                text="Disable All Investments"
               />
             </div>
           </div>
@@ -173,7 +173,7 @@ export const SystemSettingsScreen = () => {
               <FormCheckBoxField
                 name="disableTopUpWalletButton"
                 control={control}
-                text="Disabled All Top Up"
+                text="Disable All Top-Ups"
               />
             </div>
           </div>
@@ -182,7 +182,7 @@ export const SystemSettingsScreen = () => {
               <FormCheckBoxField
                 name="disableWithdrawWalletButton"
                 control={control}
-                text="Disabled All Withdrawal"
+                text="Disable All Withdrawals"
               />
             </div>
           </div>
@@ -191,7 +191,7 @@ export const SystemSettingsScreen = () => {
               <FormCheckBoxField
                 name="hideAllProjects"
                 control={control}
-                text="Hide All Projects"
+                text="Hide All Offers"
               />
             </div>
           </div>
@@ -200,7 +200,7 @@ export const SystemSettingsScreen = () => {
               <FormCheckBoxField
                 name="autoPassKYC"
                 control={control}
-                text="Auto KYC"
+                text="Automatic KYC Verification"
               />
             </div>
           </div>

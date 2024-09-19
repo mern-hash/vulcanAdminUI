@@ -181,6 +181,7 @@ export const ProjectListScreen = () => {
           {isLoggedIn && (
             <div className="mobile-hide">
               <CustomTabComponent
+                isMobile
                 items={projectFilters}
                 value={currentTab}
                 onClick={(item) => tabChanged(item.value)}

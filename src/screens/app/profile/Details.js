@@ -23,7 +23,9 @@ export const ProfileDetailsScreen = () => {
       <ProfileDetails
         user={currentUser}
         accountIntegrated={accountIntegrated}
+        kycIntegrated={kycIntegrated}
         isSponsor={isSponsor}
+        isInvestor={isInvestor}
       />
     </div>
   )

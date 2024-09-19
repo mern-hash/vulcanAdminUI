@@ -1,3 +1,4 @@
+import { BackArrow } from 'components'
 import { PrimaryButton } from 'elements'
 import { Images } from 'images'
 import { Link } from 'react-router-dom'
@@ -32,7 +33,9 @@ export const NotFoundScreen = () => {
       <h4>Page Not Found</h4>
       <p className="mb-5">It looks like nothing was found at this location</p>
       <div className="row my-2">
-        <ButtonBlock className="d-flex d-flex justify-content-center">
+        <ButtonBlock className="d-flex d-flex justify-content-center gap-3">
+          <BackArrow showArrow={false} backText="Go Back" />
+
           <Link to="/app">
             <PrimaryButton
               className="ms-2"

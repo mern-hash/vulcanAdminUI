@@ -39,7 +39,7 @@ const Container = styled.div`
 const StepsBLock = styled.div`
   background-color: ${({ theme }) => theme.colors.gray50};
   border-radius: ${({ theme }) => theme.borderRadius.border16};
-  color: ${({ theme }) => theme.colors.gray300};
+  color: ${({ theme }) => theme.colors.gray400};
   padding: 16px;
   line-height: 24px;
   width: 25%;

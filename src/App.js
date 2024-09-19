@@ -83,7 +83,7 @@ function App() {
               <Route
                 path="kyc"
                 element={
-                  <RoleGuard roles={[Roles.investor]}>
+                  <RoleGuard roles={[Roles.investor,Roles.sponsor]}>
                     <KYCGuard>
                       <KYCScreen />
                     </KYCGuard>

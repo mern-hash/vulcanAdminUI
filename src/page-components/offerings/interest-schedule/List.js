@@ -1,14 +1,21 @@
+/* eslint-disable */
 import { AppTable, FlexRow, FlexRowBetween } from 'components'
-import { ButtonIcon, IconPrimaryButton, SectionHeader } from 'elements'
-import { Popconfirm } from 'antd'
+import {
+  ButtonIcon,
+  IconPrimaryButton,
+  PrimaryButton,
+  SectionHeader,
+} from 'elements'
+import { Button, Popconfirm } from 'antd'
 import { PencilSimple, Plus, Trash } from 'phosphor-react'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import {
   CommonUtility,
   DateUtility,
   ProjectsInterestScheduleService,
 } from 'utility'
 import { AddEditInterestScheduleModal } from './AddEditModal'
+import { DistributeInterestModal } from '../details/DistributeInterestModal'
 
 export const InterestDistributeList = ({
   projectId,
@@ -19,6 +26,8 @@ export const InterestDistributeList = ({
 }) => {
   const [currentRow, setCurrentRow] = useState(null)
   const [openModal, setOpenModal] = useState(false)
+  const [openDistributeModal, setOpenDistributeModal] = useState(false)
+  const [schedule, setSchedule] = useState(null)
 
   const edit = (data) => {
     setCurrentRow(data)
@@ -62,6 +71,11 @@ export const InterestDistributeList = ({
     setOpenModal(true)
   }
 
+  const handleDistribute = (id) => {
+    setSchedule(id)
+    setOpenDistributeModal(true)
+  }
+
   const columns = useMemo(() => {
     const temp = [
       {
@@ -80,6 +94,20 @@ export const InterestDistributeList = ({
         key: 'distributeDate',
         dataIndex: 'distributeDate',
         render: (value) => DateUtility.dateToString(value),
+      },
+      {
+        title: 'Action',
+        key: 'distribute',
+        dataIndex: 'distribute',
+        render: (value, record) => {
+          return (
+            <>
+              <PrimaryButton onClick={() => handleDistribute(record._id)}>
+                distribute
+              </PrimaryButton>
+            </>
+          )
+        },
       },
     ]
     if (canTakeAction) {
@@ -113,6 +141,10 @@ export const InterestDistributeList = ({
     return temp
   }, [interestDistributeList, canTakeAction])
 
+  useEffect(() => {
+    console.log('openDistributeModal', openDistributeModal)
+  }, [openDistributeModal])
+
   return (
     <>
       <div className="row mb-3">
@@ -123,7 +155,7 @@ export const InterestDistributeList = ({
         >
           {!hideTitle && (
             <SectionHeader className="mb-0">
-              Interest Distribute Schedules
+              Interest Distribute Schedules *
             </SectionHeader>
           )}
           {canTakeAction && (
@@ -150,6 +182,12 @@ export const InterestDistributeList = ({
         data={currentRow}
         isEditMode={!!currentRow?._id}
         projectId={projectId}
+      />
+      <DistributeInterestModal
+        id={projectId}
+        scheduleId={schedule}
+        closeModal={() => setOpenDistributeModal(false)}
+        open={openDistributeModal}
       />
     </>
   )

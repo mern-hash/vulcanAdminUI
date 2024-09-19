@@ -51,7 +51,7 @@ export const UserInfo = ({ userData, nextScreen }) => {
 
   return (
     <>
-      <CustomHeading heading="Enter your details to get started." />
+      <CustomHeading heading="Enter your details to get started" />
       <Form layout="vertical">
         <FormTextFormField
           control={control}

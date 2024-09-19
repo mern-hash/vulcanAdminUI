@@ -136,11 +136,11 @@ export function CardList({ item,isLoggedIn,toggleFav }) {
 							<div>
 								<Title>
 									{item.name}
-									<StatusTag
-										status={item.status}
-										date={item.transactionCloseDate}
-									/>
 								</Title>
+								<StatusTag
+									status={item.status}
+									date={item.transactionCloseDate}
+								/>
 								<AddressText>{item.addressLocation}</AddressText>
 							</div>
 							<Price>

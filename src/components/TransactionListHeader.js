@@ -68,7 +68,7 @@ export const TransactionListHeader = ({
             !isSponsor ||
             ![
               WalletTxTypeKey.walletWithdraw,
-              WalletTxTypeKey.walletWithdraw,
+              WalletTxTypeKey.walletTopUp,
             ].includes(x.value),
         ),
     [isSponsor],
@@ -97,9 +97,7 @@ export const TransactionListHeader = ({
       [key]: value,
     })
     if (key === 'projectId') {
-      setSearchProject(
-        options?.find((ele) => ele.value === value)?.label || '',
-      )
+      setSearchProject(options?.find((ele) => ele.value === value)?.label || '')
     }
   }
 

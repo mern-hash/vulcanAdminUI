@@ -106,7 +106,7 @@ export const FinancialList = ({ projectId,financials,setFinancials,canTakeAction
     <>
       <div className="row mb-3">
         <FlexRowBetween className="col-12 align-items-center">
-          <SectionHeader className="mb-0">Financials</SectionHeader>
+          <SectionHeader className="mb-0">Financials *</SectionHeader>
           {canTakeAction && <IconPrimaryButton
             text="Add New"
             icon={<Plus size={16} weight="bold" />}

@@ -143,7 +143,7 @@ export const PledgeModal = ({ data, investData, open, closeModal }) => {
     <CustomModal
       width={526}
       open={open}
-      title={investmentFlow ? 'Equity' : 'Pledge Shares'}
+      title={investmentFlow ? 'Equity' : 'Invest Shares'}
       closeIcon={<X size={16} weight="bold" />}
       onCancel={() => closeModal()}
       footer={[

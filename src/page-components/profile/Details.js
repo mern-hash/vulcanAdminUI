@@ -37,7 +37,12 @@ const EditBtn = styled(PrimaryButton)`
   border-radius: ${({ theme }) => theme.borderRadius.borderRound};
 `
 
-export function ProfileDetails({ user, accountIntegrated, isSponsor }) {
+export function ProfileDetails({
+  user,
+  accountIntegrated,
+  kycIntegrated,
+  isSponsor,
+}) {
   return (
     <UserCard>
       <Row
@@ -111,10 +116,15 @@ export function ProfileDetails({ user, accountIntegrated, isSponsor }) {
             <PencilSimple size={16} className="ml-8" />
           </EditBtn>
         </Link>
-        {!accountIntegrated && isSponsor && (
+        {!accountIntegrated && isSponsor && kycIntegrated && (
           <LinkAccount canIntegrate>
             <PrimaryButton>Link Bank Account</PrimaryButton>
           </LinkAccount>
+        )}
+        {!kycIntegrated && (
+          <Link to="/app/kyc">
+            <PrimaryButton heightxlsmall={1}>Start Verification</PrimaryButton>
+          </Link>
         )}
       </div>
 

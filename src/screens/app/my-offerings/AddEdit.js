@@ -668,7 +668,7 @@ export const MyOfferingAddEditScreen = () => {
   return (
     <div className="container">
       <CustomHeading
-        heading={editMode ? 'Edit a offering' : 'Create a new Offering'}
+        heading={editMode ? 'Edit an Offering' : 'Create a new Offering'}
         subHeader="Required fields have an asterisk: *"
       />
       <Form layout="vertical" onFinish={handleSubmit(save)}>
@@ -791,7 +791,7 @@ export const MyOfferingAddEditScreen = () => {
                 name="title"
                 control={control}
                 errors={errors?.title}
-                label="Project Title"
+                label="Offering Title"
                 required
                 extraLabel={
                   <CustomTooltip text="The official name or title given to the crowdfunding project.">
@@ -834,7 +834,7 @@ export const MyOfferingAddEditScreen = () => {
                 name="maxInvestment"
                 control={control}
                 errors={errors?.maxInvestment}
-                label="Max Investment"
+                label="Max Investment *"
                 extraLabel={
                   <CustomTooltip text="The maximum amount an individual can invest in the project, often subject to regulatory limits.">
                     <Info size={32} />
@@ -1269,6 +1269,7 @@ export const MyOfferingAddEditScreen = () => {
                 labelText="Cover Image*"
                 removeURLFile={removeCoverImage}
               />
+              <small>Recommended: 432x280px, JPEG/PNG, Max 5MB. Auto-crop will be applied.</small>
             </div>
           </div>
           <div className="row g-3">
@@ -1283,6 +1284,7 @@ export const MyOfferingAddEditScreen = () => {
                 labelText="Pictures*"
                 removeURLFile={removeURLImage}
               />
+              <small>Recommended: 524x316px, JPEG/PNG, Max 5MB. Auto-crop will be applied.</small>
             </div>
           </div>
           <div className="row g-3 mt-0">

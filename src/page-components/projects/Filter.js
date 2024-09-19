@@ -310,7 +310,7 @@ export const FilterDrawer = ({
       <Form layout="vertical" className="bt">
         <BodyScroller className="p-4">
           <ButtonFilter
-            label="Project Status"
+            label="Offer Status"
             value={filter.projectMixStatus}
             onChange={(value) => onChange('projectMixStatus', value)}
             options={ProjectMixStatusList}
@@ -360,7 +360,7 @@ export const FilterDrawer = ({
             single
           />
           <ButtonFilter
-            label="Project Type"
+            label="Offer Type"
             value={filter.projectType}
             onChange={(value) => onChange('projectType', value)}
             options={projectTypes}
@@ -388,6 +388,7 @@ export const FilterDrawer = ({
             type={SliderType.number}
           />
           <SliderFilter
+            type={SliderType.number}
             label="ESG Score"
             min={0}
             max={100}

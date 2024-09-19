@@ -28,20 +28,24 @@ const TabWrapper = styled.div`
   }
 `
 
+const applyMobileStyles = (isMobile, theme) => `
+  flex-wrap: wrap;
+  border-radius: ${isMobile ? '8px' : '56px'};
+  background-color: ${isMobile ? 'transparent' : theme.colors.gray100};
+  flex-direction: ${isMobile ? 'column' : 'row'};
+  border: ${isMobile ? `1px solid ${theme.colors.gray200}` : 'none'};
+  box-shadow: ${isMobile ? '0px 2px 2px 0px rgba(113, 113, 122, 0.06)' : 'none'};
+`;
+
 const Wrapper = styled.div`
   border-radius: 56px;
   background: ${({ theme }) => theme.colors.gray100};
   padding: 4px;
 
   @media screen and (max-width: 767px) {
-    flex-wrap: wrap;
-    border-radius: 8px;
-    background-color: transparent;
-    flex-direction: column;
-    border: 1px solid ${({ theme }) => theme.colors.gray200};
-    box-shadow: 0px 2px 2px 0px rgba(113, 113, 122, 0.06);
+    ${({ isMobile, theme }) => applyMobileStyles(isMobile, theme)}
   }
-`
+`;
 
 const Item = styled.div`
   display: flex;
@@ -64,8 +68,12 @@ const Item = styled.div`
     color: ${({ theme }) => theme.colors.gray900};
 
     @media screen and (max-width: 767px) {
-      box-shadow: none;
-      border-radius: 0px;
+    ${({ isMobile }) =>
+      isMobile &&
+      `
+        box-shadow: none;
+        border-radius: 0px;
+      `}
     }
   }
   @media screen and (max-width: 767px) {
@@ -91,12 +99,13 @@ export const CustomTabDiv = ({ items = [] }) => {
   )
 }
 
-export const CustomTabComponent = ({ items = [],value,onClick }) => {
+export const CustomTabComponent = ({ items = [],value,onClick,isMobile = false }) => {
   return (
     <TabWrapper className="d-flex p-0">
-      <Wrapper className="d-flex">
+      <Wrapper className="d-flex" isMobile={isMobile}>
         {items.map((t) => (
           <Item
+            isMobile={isMobile}
             key={t.value}
             className={`tab ${t.key === value ? 'active' : ''}`}
             onClick={() => onClick(t)}
