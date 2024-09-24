@@ -142,7 +142,7 @@ export const InfoStep = ({ user, goNext, goBack }) => {
               label="Birth Date"
               required
               disabledDate={DateUtility.disabledNotAdultDate}
-              placeholder="MM-DD-YYYY"
+              placeholder="YYYY-MM-DD"
               defaultValue={DateUtility.defaultDateValue()}
             />
           </div>

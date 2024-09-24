@@ -92,6 +92,7 @@ export const NameStep = ({ user, goNext, goBack }) => {
                     to="https://realios.co/tos"
                     target="_blank"
                     className="link-underline"
+                    disabled
                   >
                     Terms of Service
                   </Link>{' '}
@@ -100,6 +101,7 @@ export const NameStep = ({ user, goNext, goBack }) => {
                     to="https://realios.co/privacy"
                     target="_blank"
                     className="link-underline"
+                    disabled
                   >
                     Privacy Policy
                   </Link>

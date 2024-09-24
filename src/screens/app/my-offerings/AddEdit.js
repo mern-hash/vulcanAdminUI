@@ -1269,7 +1269,7 @@ export const MyOfferingAddEditScreen = () => {
                 labelText="Cover Image*"
                 removeURLFile={removeCoverImage}
               />
-              <small>Recommended: 432x280px, JPEG/PNG, Max 5MB. Auto-crop will be applied.</small>
+              <small>Recommended size: 432x280px. Only PNG format is allowed. Auto-cropping will be applied.</small>
             </div>
           </div>
           <div className="row g-3">
@@ -1284,7 +1284,7 @@ export const MyOfferingAddEditScreen = () => {
                 labelText="Pictures*"
                 removeURLFile={removeURLImage}
               />
-              <small>Recommended: 524x316px, JPEG/PNG, Max 5MB. Auto-crop will be applied.</small>
+              <small>Recommended size: 524x316px. Only PNG format is allowed. Auto-cropping will be applied.</small>
             </div>
           </div>
           <div className="row g-3 mt-0">

@@ -7,14 +7,14 @@ export function StatusTag({ date,status }) {
     return <CustomTag
       text="Investment Window Closed"
       color={theme.colors.gray500}
-      borderRadis="mb-2 border6"
+      borderRadis="ms-2 border6"
     />
   }
   if (status === ProjectStatus.upcoming) {
     return <CustomTag
       text="Coming Soon"
       color={theme.colors.gray500}
-      borderRadis="mb-2 border6"
+      borderRadis="ms-2 border6"
     />
   }
   return null;

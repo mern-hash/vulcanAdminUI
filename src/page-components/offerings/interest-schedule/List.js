@@ -95,20 +95,6 @@ export const InterestDistributeList = ({
         dataIndex: 'distributeDate',
         render: (value) => DateUtility.dateToString(value),
       },
-      {
-        title: 'Action',
-        key: 'distribute',
-        dataIndex: 'distribute',
-        render: (value, record) => {
-          return (
-            <>
-              <PrimaryButton onClick={() => handleDistribute(record._id)}>
-                distribute
-              </PrimaryButton>
-            </>
-          )
-        },
-      },
     ]
     if (canTakeAction) {
       temp.push({
@@ -136,6 +122,22 @@ export const InterestDistributeList = ({
             </Popconfirm>
           </FlexRow>
         ),
+      })
+    }
+    if (!canTakeAction) {
+      temp.push({
+        title: 'Distribute',
+        key: 'distribute',
+        dataIndex: 'distribute',
+        render: (value, record) => {
+          return (
+            <>
+              <PrimaryButton onClick={() => handleDistribute(record._id)}>
+                distribute
+              </PrimaryButton>
+            </>
+          )
+        },
       })
     }
     return temp
