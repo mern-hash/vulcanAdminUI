@@ -148,8 +148,9 @@ const ProjectSchema = yup.object().shape({
   maxInvestment: yup
     .number()
     .transform((v) => (v === '' || Number.isNaN(v) ? null : v))
-    .nullable(true)
+    .typeError('Amount is required')
     .positive()
+    .required('Max Investment is required')
     .when('minInvestment', (minInvestment, schema) =>
       schema.test(
         'maxInvestment',
