@@ -274,7 +274,6 @@ export const MyOfferingAddEditScreen = () => {
     () => pathname.includes('app/offerings/edit'),
     [pathname],
   )
-
   const navigate = useNavigate()
 
   const {
