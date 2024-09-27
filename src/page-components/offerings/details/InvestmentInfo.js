@@ -17,7 +17,7 @@ export const ProjectInvestmentInfo = ({ data }) => {
               <CustomValueName
                 name={
                   CommonUtility.numberWithCommas(
-                    data?.statistics?.totalInvestors,
+                    data?.statistics?.totalInvestors || 0,
                   ) || '-'
                 }
                 value="Total Investors"
