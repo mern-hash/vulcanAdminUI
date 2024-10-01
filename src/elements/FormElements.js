@@ -1016,10 +1016,13 @@ export function RTEFormField({
           <RichTextEditor
             onBlur={props.field.onBlur}
             value={props.field.value}
-            onChange={(value) => props.field.onChange(value)}
+            onChange={(value) => {
+              const cleanValue = value.replace(/<[^>]*>/g, '').trim();
+              props.field.onChange(cleanValue || '');
+            }}
             {...rest}
           />
-            {errors && (
+          {errors && (
             <DangerText className="danger">
               {errors?.message}
             </DangerText>
