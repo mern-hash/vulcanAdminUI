@@ -632,7 +632,7 @@ export const MyOfferingAddEditScreen = () => {
         await uploadCoverImage(result._id)
       }
       notification.success({
-        message: 'The project has been saved successfully.',
+        message: editMode ? 'The project has been updated successfully.' : 'The project has been added successfully.',
       })
       navigate(-1)
     } catch (error) {
