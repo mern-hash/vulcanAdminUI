@@ -496,7 +496,7 @@ export const MyOfferingAddEditScreen = () => {
 
   const save = async (formData) => {
     try {
-      if (tranches.length === 0) {
+      if (offeringType === OfferingType.equity && tranches.length === 0) {
         notification.error({
           message: 'Cannot create an offer without the tranches.',
         })
@@ -545,7 +545,7 @@ export const MyOfferingAddEditScreen = () => {
         })
         return
       }
-      if (interestSchedules.length === 0) {
+      if (offeringType !== OfferingType.equity && interestSchedules.length === 0) {
         notification.error({
           message: 'Cannot create an offer without the interest schedules.',
         })
