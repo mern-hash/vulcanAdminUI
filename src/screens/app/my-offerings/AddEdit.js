@@ -159,88 +159,123 @@ const ProjectSchema = yup.object().shape({
           !maxInvestment || maxInvestment > (minInvestment || 0),
       ),
     ),
-  equityTokenInfo: yup.object().shape({
-    tokenPrice: yup
-      .number()
-      .typeError('Share Price is required')
-      .when('offeringType', (offeringType, schema) =>
-        [OfferingType.equity, OfferingType.both].includes(offeringType)
-          ? schema.required('Share Price is required').positive()
-          : schema.optional().nullable(),
-      ),
-    totalTokens: yup
-      .number()
-      .typeError('Total Share is required')
-      .when('offeringType', (offeringType, schema) =>
-        [OfferingType.equity, OfferingType.both].includes(offeringType)
-          ? schema.required('Total Shares is required').positive()
-          : schema.optional().nullable(),
-      ),
-    requiredTotalPledge: yup
-      .number()
-      .typeError('Required Total Pledge is required')
-      .when('offeringType', (offeringType, schema) =>
-        [OfferingType.equity, OfferingType.both].includes(offeringType)
-          ? schema.required('Required Total Pledge is required').positive()
-          : schema.optional().nullable(),
-      ),
+  // equityTokenInfo: yup.object().shape({
+  //   tokenPrice: yup
+  //     .number()
+  //     .typeError('Share Price is required')
+  //     .when('offeringType', (offeringType, schema) =>
+  //       [OfferingType.equity, OfferingType.both].includes(offeringType)
+  //         ? schema.required('Share Price is required').positive()
+  //         : schema.optional().nullable(),
+  //     ),
+  //   totalTokens: yup
+  //     .number()
+  //     .typeError('Total Share is required')
+  //     .when('offeringType', (offeringType, schema) =>
+  //       [OfferingType.equity, OfferingType.both].includes(offeringType)
+  //         ? schema.required('Total Shares is required').positive()
+  //         : schema.optional().nullable(),
+  //     ),
+  //   requiredTotalPledge: yup
+  //     .number()
+  //     .typeError('Required Total Pledge is required')
+  //     .when('offeringType', (offeringType, schema) =>
+  //       [OfferingType.equity, OfferingType.both].includes(offeringType)
+  //         ? schema.required('Required Total Pledge is required').positive()
+  //         : schema.optional().nullable(),
+  //     ),
+  // }),
+  equityTokenInfo: yup.object().when('offeringType', (offeringType, schema) => {
+    if ([OfferingType.equity, OfferingType.both].includes(offeringType[0])) {
+      return schema.shape({
+        tokenPrice: yup.number().required('Share Price is required'),
+        totalTokens: yup.number().required('Total Shares is required'),
+        requiredTotalPledge: yup.number().required('Total Pledge is required'),
+      });
+    }
+    return schema;
   }),
-  debtTokenInfo: yup.object().shape({
-    tokenPrice: yup
-      .number()
-      .typeError('Share Price is required')
-      .when('offeringType', (offeringType, schema) =>
-        [OfferingType.equity, OfferingType.both].includes(offeringType)
-          ? schema.required('Share Price is required').positive()
-          : schema.optional().nullable(),
-      ),
-    totalTokens: yup
-      .number()
-      .typeError('Total Share is required')
-      .when('offeringType', (offeringType, schema) =>
-        [OfferingType.equity, OfferingType.both].includes(offeringType)
-          ? schema.required('Total Share is required').positive()
-          : schema.optional().nullable(),
-      ),
-    requiredTotalPledge: yup
-      .number()
-      .typeError('Required Total Pledge is required')
-      .when('offeringType', (offeringType, schema) =>
-        [OfferingType.equity, OfferingType.both].includes(offeringType)
-          ? schema.required('Required Total Pledge is required').positive()
-          : schema.optional().nullable(),
-      ),
-    defaultInterestPercentage: yup
-      .number()
-      .typeError('Min Raise Percentage is required')
-      .when('offeringType', (offeringType, schema) =>
-        [OfferingType.equity, OfferingType.both].includes(offeringType)
-          ? schema
-              .required('Min Raise Percentage is required')
-              .positive()
-              .max(100, 'Min Raise Percentage should not be more than 100')
-          : schema.optional().nullable(),
-      ),
-    maxInterestPercentage: yup
-      .number()
-      .typeError('Max Raise Percentage is required')
-      .when('offeringType', (offeringType, schema) =>
-        [OfferingType.equity, OfferingType.both].includes(offeringType)
-          ? schema
-              .required('Max Raise Percentage is required')
-              .positive()
-              .max(100, 'Max Raise Percentage should not be more than 100')
-          : schema.optional().nullable(),
-      )
-      .when('defaultInterestPercentage', (defaultInterestPercentage, schema) =>
-        schema
-          .min(
-            defaultInterestPercentage,
-            'Max Raise Percentage should be greater than Min Raise Percentage',
-          )
-          .max(100, 'Max Raise Percentage should not be more than 100'),
-      ),
+  debtTokenInfo: yup.object().when('offeringType', (offeringType, schema) => {
+    if ([OfferingType.debt, OfferingType.both].includes(offeringType[0])) {
+      return schema.shape({
+        tokenPrice: yup.number().required('Share Price is required'),
+        totalTokens: yup.number().required('Total Shares is required'),
+        requiredTotalPledge: yup.number().required('Total Pledge is required'),
+        defaultInterestPercentage: yup.number()
+        .required('Min Raise Percentage is required')
+        .positive()
+        .max(100, 'Min Raise Percentage should not be more than 100'),
+        maxInterestPercentage: yup.number()
+        .required('Max Raise Percentage is required')
+        .positive()
+        .max(100, 'Max Raise Percentage should not be more than 100')
+        .when('defaultInterestPercentage', (defaultInterestPercentage, schema) =>
+          schema.min(
+                  defaultInterestPercentage,
+                  'Max Raise Percentage should be greater than Min Raise Percentage',
+                )
+                .max(100, 'Max Raise Percentage should not be more than 100'),
+            ),
+      });
+    }
+    return schema;
   }),
+  // debtTokenInfo: yup.object().shape({
+  //   tokenPrice: yup
+  //     .number()
+  //     .typeError('Share Price is required')
+  //     .when('offeringType', (offeringType, schema) =>
+  //       [OfferingType.equity, OfferingType.both].includes(offeringType)
+  //         ? schema.required('Share Price is required').positive()
+  //         : schema.optional().nullable(),
+  //     ),
+  //   totalTokens: yup
+  //     .number()
+  //     .typeError('Total Share is required')
+  //     .when('offeringType', (offeringType, schema) =>
+  //       [OfferingType.equity, OfferingType.both].includes(offeringType)
+  //         ? schema.required('Total Share is required').positive()
+  //         : schema.optional().nullable(),
+  //     ),
+  //   requiredTotalPledge: yup
+  //     .number()
+  //     .typeError('Required Total Pledge is required')
+  //     .when('offeringType', (offeringType, schema) =>
+  //       [OfferingType.equity, OfferingType.both].includes(offeringType)
+  //         ? schema.required('Required Total Pledge is required').positive()
+  //         : schema.optional().nullable(),
+  //     ),
+  //   defaultInterestPercentage: yup
+  //     .number()
+  //     .typeError('Min Raise Percentage is required')
+  //     .when('offeringType', (offeringType, schema) =>
+  //       [OfferingType.equity, OfferingType.both].includes(offeringType)
+  //         ? schema
+  //             .required('Min Raise Percentage is required')
+  //             .positive()
+  //             .max(100, 'Min Raise Percentage should not be more than 100')
+  //         : schema.optional().nullable(),
+  //     ),
+  //   maxInterestPercentage: yup
+  //     .number()
+  //     .typeError('Max Raise Percentage is required')
+  //     .when('offeringType', (offeringType, schema) =>
+  //       [OfferingType.equity, OfferingType.both].includes(offeringType)
+  //         ? schema
+  //             .required('Max Raise Percentage is required')
+  //             .positive()
+  //             .max(100, 'Max Raise Percentage should not be more than 100')
+  //         : schema.optional().nullable(),
+  //     )
+  //     .when('defaultInterestPercentage', (defaultInterestPercentage, schema) =>
+  //       schema
+  //         .min(
+  //           defaultInterestPercentage,
+  //           'Max Raise Percentage should be greater than Min Raise Percentage',
+  //         )
+  //         .max(100, 'Max Raise Percentage should not be more than 100'),
+  //     ),
+  // }),
   aroundProperty: yup.object().shape({
     mapLink: yup
       .string()
