@@ -27,6 +27,7 @@ export const DebtModal = ({ data, open, closeModal, debtData }) => {
   const [accountList, setAccoutList] = useState([])
   const { currentBankAccount } = useAuth()
   const [idempotencyKey, setIdempotencyKey] = useState('')
+  const [disableBuyShare, setDisableBuyShare] = useState(false)
 
   const {
     control,
@@ -40,6 +41,7 @@ export const DebtModal = ({ data, open, closeModal, debtData }) => {
 
   useEffect(() => {
     const notSufficient = +(wallet?.value || 0) < total
+    setDisableBuyShare(notSufficient)
     const temp = [
       {
         label: `Your Wallet (${CommonUtility.currencyFormat(
@@ -51,13 +53,13 @@ export const DebtModal = ({ data, open, closeModal, debtData }) => {
           ? 'Your wallet balance is not sufficient. Please add funds to continue.'
           : '',
       },
-      {
-        label: currentBankAccount?.name || 'Bank Transfer',
-        value: 'bankTransfer',
-      },
+      // {
+      //   label: currentBankAccount?.name || 'Bank Transfer',
+      //   value: 'bankTransfer',
+      // },
     ]
     setAccoutList(temp)
-    setValue('fundingSource', notSufficient ? 'bankTransfer' : 'balance')
+    setValue('fundingSource', 'balance')
   }, [open, wallet, currentBankAccount, total])
 
   useEffect(() => {
@@ -106,6 +108,7 @@ export const DebtModal = ({ data, open, closeModal, debtData }) => {
           htmlType="submit"
           onClick={handleSubmit(save)}
           loading={!!processing}
+          disabled={disableBuyShare}
         >
           Invest
         </PrimaryButton>,

@@ -87,7 +87,7 @@ export const UserEditScreen = () => {
   })
 
   useEffect(() => {
-    if (user?.Username) {
+    if (user?.userData) {
       // Attirubte
       // eslint-disable-next-line semi-style
       const userInfo = user?.userData

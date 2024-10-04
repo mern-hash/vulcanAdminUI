@@ -42,6 +42,7 @@ export const PledgeModal = ({ data, investData, open, closeModal }) => {
   const [processing, setProcessing] = useState('')
   const [investmentFlow, setInvestmentFlow] = useState(false)
   const [openHowItWorksModal, setOpenHowItWorksModal] = useState(false)
+  const [disableBuyShare, setDisableBuyShare] = useState(false)
   const { data: wallet } = GetWalletOverview()
   const { currentBankAccount } = useAuth()
 
@@ -80,13 +81,14 @@ export const PledgeModal = ({ data, investData, open, closeModal }) => {
           ? 'Your wallet balance is not sufficient. Please add funds to continue.'
           : '',
       },
-      {
-        label: currentBankAccount?.name || 'Bank Transfer',
-        value: 'bankTransfer',
-      },
+      // {
+      //   label: currentBankAccount?.name || 'Bank Transfer',
+      //   value: 'bankTransfer',
+      // },
     ]
+    setDisableBuyShare(notSufficient)
     setAccoutList(temp)
-    setValue('fundingSource', notSufficient ? 'bankTransfer' : 'balance')
+    setValue('fundingSource', 'balance')
   }, [open, wallet, data, tokenCount, currentBankAccount])
 
   useEffect(() => {
@@ -163,6 +165,7 @@ export const PledgeModal = ({ data, investData, open, closeModal }) => {
             htmlType="submit"
             onClick={handleSubmit(save)}
             loading={!!processing}
+            disabled={disableBuyShare}
           >
             {investmentFlow ? 'Buy Shares' : 'Pledge Now'}
           </PrimaryButton>

@@ -26,11 +26,11 @@ export const UserDetailsScreen = () => {
   const { settings } = useAuth()
 
   const userData = useMemo(() => {
-    if (!data?.Username) {
+    if (!data?.userData) {
       return {}
     }
     const attributeData = data?.userData
-    data?.UserAttributes.forEach((item) => {
+    data?.UserAttributes?.forEach((item) => {
       attributeData[item.Name] = item.Value
     })
 
