@@ -111,8 +111,14 @@ export const UserEditScreen = () => {
 
   const save = async (formData) => {
     try {
+      if (!user?.userData?._id) {
+        notification.error({
+          message: 'UserId does not exist',
+        })
+        return
+      }
       setProcessing('Saving')
-      const reqestData = {
+      const requestData = {
         city: formData.city,
         country: 'US',
         postalCode: formData.postalCode,
@@ -125,9 +131,9 @@ export const UserEditScreen = () => {
         name: `${formData.givenName} ${formData.familyName}`,
         phone: `+${formData.phone.replace(/\+/g, '')}`,
       }
-      await UsersService.patch(id, {
-        reqestData,
-      })
+      await UsersService.patch(user?.userData?._id,
+        requestData,
+      )
       notification.success({
         message: 'The user has been updated successfully.',
       })
