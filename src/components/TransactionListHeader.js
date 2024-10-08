@@ -7,6 +7,7 @@ import {
   CommonUtility,
   TxStatusKey,
   TransactionTypes,
+  OfferingTransactionTypes,
   WalletTxTypeKey,
 } from 'utility'
 
@@ -44,6 +45,7 @@ export const TransactionListHeader = ({
   hideTransactionType,
   filterChanged,
   isSponsor,
+  isOffering,
 }) => {
   const [searchProject, setSearchProject] = useState('')
   const [search, setSearch] = useState({
@@ -58,7 +60,7 @@ export const TransactionListHeader = ({
 
   const txTypes = useMemo(
     () =>
-      Object.keys(TransactionTypes)
+      Object.keys(isOffering ? OfferingTransactionTypes : TransactionTypes)
         .map((key) => ({
           value: key,
           label: TransactionTypes[key],

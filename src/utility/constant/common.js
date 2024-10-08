@@ -83,6 +83,16 @@ export const TransactionTypes = {
   [WalletTxTypeKey.secondaryMarket]: "Secondary Market",
 }
 
+export const OfferingTransactionTypes = {
+  [WalletTxTypeKey.equity]: 'Equity',
+  [WalletTxTypeKey.debt]: 'Debt',
+  [WalletTxTypeKey.pledged]: 'Pledged',
+  [WalletTxTypeKey.dividend]: 'Dividend',
+  [WalletTxTypeKey.debtDividend]: 'Debt Divident',
+  [WalletTxTypeKey.refund]: 'Refund',
+  [WalletTxTypeKey.secondaryMarket]: "Secondary Market",
+}
+
 export const AuthStatus = {
   Loading: 'Loading',
   SignedIn: 'SignedIn',

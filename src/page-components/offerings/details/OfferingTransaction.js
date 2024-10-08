@@ -155,6 +155,7 @@ export const OfferingTransaction = ({ projectId, isSponsor }) => {
           isSponsor={isSponsor}
           hideProjectName
           filterChanged={filterChanged}
+          isOffering={true}
         />
 
         <AppTable
