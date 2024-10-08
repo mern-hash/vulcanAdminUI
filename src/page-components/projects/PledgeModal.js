@@ -11,7 +11,7 @@ import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Question, X } from 'phosphor-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { CommonUtility, ErrorConstant, ProjectsService } from 'utility'
 import { PledgeHowWorksModal } from './PledgeHowWorksModal'
 import { GetWalletOverview } from 'hooks'
@@ -122,9 +122,22 @@ export const PledgeModal = ({ data, investData, open, closeModal }) => {
     }
   }, [tokenCount, percentage])
 
+  const availableFund = useMemo(
+    () =>
+      (data?.equityTokenInfo?.tokenPrice || 0) *
+      (data?.equityTokenInfo?.totalTokens || 0) -
+      (data?.equityTokenInfo?.totalRaise || 0),
+    [data],
+  )
+
   const save = async (formData) => {
     try {
       setProcessing('Processing')
+      if (!investmentFlow && total.total > availableFund) {
+        notification.error({ message: "The available equity balance is insufficient." })
+        closeModal(false)
+        return
+      }
       await ProjectsService.equityPledge(data._id, {
         equityPledge: {
           percentage: CommonUtility.toDecimal(formData.percentage),
