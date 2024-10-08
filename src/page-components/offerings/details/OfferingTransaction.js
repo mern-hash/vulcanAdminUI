@@ -60,6 +60,8 @@ export const OfferingTransaction = ({ projectId, isSponsor }) => {
     setOpenUserModal(false)
   }
 
+  const isOffering = true
+
   const columns = useMemo(() => {
     const temp = [
       {
@@ -155,7 +157,7 @@ export const OfferingTransaction = ({ projectId, isSponsor }) => {
           isSponsor={isSponsor}
           hideProjectName
           filterChanged={filterChanged}
-          isOffering={true}
+          isOffering={isOffering}
         />
 
         <AppTable
