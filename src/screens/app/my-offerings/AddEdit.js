@@ -310,6 +310,7 @@ export const MyOfferingAddEditScreen = () => {
     () => pathname.includes('app/offerings/edit'),
     [pathname],
   )
+
   const navigate = useNavigate()
 
   const {
@@ -534,6 +535,12 @@ export const MyOfferingAddEditScreen = () => {
       if (offeringType === OfferingType.equity && tranches.length === 0) {
         notification.error({
           message: 'Cannot create an offer without the tranches.',
+        })
+        return
+      }
+      if (financials.length === 0) {
+        notification.error({
+          message: 'Cannot create an offer without the financials.',
         })
         return
       }
