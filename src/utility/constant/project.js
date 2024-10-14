@@ -39,6 +39,21 @@ export const OfferingTypes = [
   },
 ]
 
+export const SecondaryOfferingTypes = [
+  {
+    value: OfferingType.equity,
+    label: 'Equity',
+  },
+  {
+    value: OfferingType.debt,
+    label: 'Debts',
+  },
+  {
+    value: OfferingType.both,
+    label: 'Both',
+  },
+]
+
 export const ProjectTypes = [
   {
     value: 'PURSUIT',
