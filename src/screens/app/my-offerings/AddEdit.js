@@ -625,6 +625,9 @@ export const MyOfferingAddEditScreen = () => {
     setRemovedDocuments([...removedDocuments, file._id])
     setPrivateDocuments(privateDocuments.filter((x) => x._id !== file._id))
   }
+  const filteredOfferingTypes = OfferingTypes.filter(
+    (type) => type.value !== OfferingType.debtRisk,
+  );
 
   return (
     <div className="container">
@@ -691,7 +694,7 @@ export const MyOfferingAddEditScreen = () => {
                 errors={errors?.offeringType}
                 label="Offering Type"
                 required
-                options={OfferingTypes}
+                options={filteredOfferingTypes}
                 extraLabel={
                   <CustomTooltip text="The way in which the investment is structured, such as equity or debt.">
                     <Info size={32} />

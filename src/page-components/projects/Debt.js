@@ -11,6 +11,7 @@ import { SuccessModal } from './SuccessModal'
 import { InvestmentButton } from 'components'
 import { Alert } from 'antd'
 import { InvestButton } from './ComingSoonTag'
+import AcknowledgementModal from './AcknowledgementModal'
 
 const ShareCalculatorBlock = styled.div`
   border-bottom-left-radius: 8px;
@@ -69,6 +70,7 @@ export const Debt = ({ data, checkWallet }) => {
   const [openDebtModal, setOpenDebtModal] = useState(false)
   const [debtData, setDebtData] = useState({})
   const [openSuccessModal, setOpenSuccessModal] = useState(false)
+  const [openTermsModal, setOpenTermsModal] = useState(false)
   const [showSlider, setShowSlider] = useState(false)
 
   const {
@@ -101,7 +103,7 @@ export const Debt = ({ data, checkWallet }) => {
         : data?.debtTokenInfo?.defaultInterestPercentage || 1,
       percentage: 100,
     })
-    setOpenDebtModal(true)
+    setOpenTermsModal(true)
   }
 
   const closeModal = (result) => {
@@ -115,6 +117,13 @@ export const Debt = ({ data, checkWallet }) => {
   const onSuccessClick = (newChanged) => {
     setOpenSuccessModal(false)
     checkWallet(newChanged)
+  }
+
+  const closeTermsModal = (result) => {
+    if (result) {
+      setOpenDebtModal(true)
+    }
+    setOpenTermsModal(false)
   }
 
   return (
@@ -181,6 +190,11 @@ export const Debt = ({ data, checkWallet }) => {
             </InvestmentButton>
           </InvestButton>
         </div>
+
+        <AcknowledgementModal
+            open={openTermsModal}
+            closeModal={closeTermsModal}
+          />
 
         <p className="text-center p-3 mb-0">
           Transaction Close Date:{' '}
