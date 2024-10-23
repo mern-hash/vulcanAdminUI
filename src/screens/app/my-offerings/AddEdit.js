@@ -160,7 +160,7 @@ const ProjectSchema = yup.object().shape({
       ),
     ),
   equityTokenInfo: yup.object().when('offeringType', (offeringType, schema) => {
-    if ([OfferingType.equity, OfferingType.both].includes(offeringType[0])) {
+    if ([OfferingType.equity, OfferingType.unitrancheDebt].includes(offeringType[0])) {
       return schema.shape({
         tokenPrice: yup.number()
           .typeError('Token Price is required').required('Token Price is required'),
@@ -171,7 +171,7 @@ const ProjectSchema = yup.object().shape({
     return schema;
   }),
   debtTokenInfo: yup.object().when('offeringType', (offeringType, schema) => {
-    if ([OfferingType.debt, OfferingType.both].includes(offeringType[0])) {
+    if ([OfferingType.debt, OfferingType.unitrancheDebt].includes(offeringType[0])) {
       return schema.shape({
         tokenPrice: yup.number().typeError('Token Price is required').required('Token Price is required'),
         totalTokens: yup.number().typeError('Total Shares is required').required('Total Shares is required'),
@@ -806,7 +806,7 @@ export const MyOfferingAddEditScreen = () => {
           </div>
         </BorderWithShadow>
 
-        {[OfferingType.equity, OfferingType.both].includes(offeringType) && (
+        {[OfferingType.equity, OfferingType.unitrancheDebt].includes(offeringType) && (
           <BorderWithShadow className="p-4 pb-0 mb-3">
             <div className="row">
               <div className="col-12">
@@ -862,7 +862,7 @@ export const MyOfferingAddEditScreen = () => {
           </BorderWithShadow>
         )}
 
-        {[OfferingType.debt, OfferingType.both].includes(offeringType) && (
+        {[OfferingType.debt, OfferingType.unitrancheDebt].includes(offeringType) && (
           <BorderWithShadow className="p-4 pb-0 mb-3">
             <div className="row">
               <div className="col-12">

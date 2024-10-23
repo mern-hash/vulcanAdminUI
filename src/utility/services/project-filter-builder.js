@@ -1,6 +1,6 @@
 /** @typedef { 'gold' | 'platinum' | 'silver' } LeedCertified */
 /** @typedef { 'PENDING' | 'CLOSED' | 'ACTIVE' | 'UPCOMING' | 'MARKFORADMINAPPROVAL' | 'WAITINGADMINAPPROVAL' | 'REFUNDED' } ProjectStatus */
-/** @typedef { 'EQUITY' | 'DEBT' | 'BOTH' } OfferingType */
+/** @typedef { 'EQUITY' | 'DEBT' | 'UNITRANCHE_DEBT' } OfferingType */
 /** @typedef { 'PURSUIT' | 'DEVELOPMENT' | 'STABILIZED' } ProjectType */
 /** @typedef { 'YES' | 'NO' } DefaultEnum */
 /** @typedef { 'PRIMARY' | 'SECONDARY' } PrimaryVsSecondary */

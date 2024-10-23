@@ -31,7 +31,7 @@ export const SellBox = ({ data, successClick }) => {
   const [transactionType, setTransactionType] = useState()
 
   const typeList = useMemo(() => {
-    let temp = OfferingTypes.filter((x) => x.value !== OfferingType.both)
+    let temp = OfferingTypes.filter((x) => x.value !== OfferingType.unitrancheDebt)
     if (data.offeringType === OfferingType.equity) {
       temp = temp.filter((x) => x.value !== OfferingType.debt)
     } else if (data.offeringType === OfferingType.debt) {

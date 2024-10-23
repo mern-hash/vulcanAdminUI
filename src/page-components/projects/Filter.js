@@ -14,8 +14,8 @@ export const OfferingTypes = [
     label: 'Debts',
   },
   {
-    value: OfferingType.both,
-    label: 'Both',
+    value: OfferingType.unitrancheDebt,
+    label: 'Unitranche Debt',
   },
 ]
 

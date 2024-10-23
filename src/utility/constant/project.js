@@ -16,7 +16,7 @@ export const AssetTypes = [
 export const OfferingType = {
   equity: 'EQUITY',
   debt: 'DEBT',
-  both: 'BOTH',
+  unitrancheDebt: 'UNITRANCHE_DEBT',
   debtRisk: 'DEBTRISK',
 }
 
@@ -30,8 +30,8 @@ export const OfferingTypes = [
     label: 'Debts',
   },
   {
-    value: OfferingType.both,
-    label: 'Both',
+    value: OfferingType.unitrancheDebt,
+    label: 'Unitranche Debt',
   },
    {
     value: OfferingType.debtRisk,
@@ -49,8 +49,8 @@ export const SecondaryOfferingTypes = [
     label: 'Debts',
   },
   {
-    value: OfferingType.both,
-    label: 'Both',
+    value: OfferingType.unitrancheDebt,
+    label: 'Unitranche Debt',
   },
 ]
 
