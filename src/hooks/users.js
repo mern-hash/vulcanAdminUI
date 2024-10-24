@@ -260,6 +260,7 @@ export const GetCurrentUserSharesHook = (
 ) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [refresh, setRefresh] = useState(0)
 
   useEffect(() => {
     const fetch = async () => {
@@ -276,13 +277,17 @@ export const GetCurrentUserSharesHook = (
         setLoading(false)
       }
     }
-
     fetch()
-  }, [])
+  }, [refresh, projectId])
+
+  const refreshData = () => {
+    setRefresh(Math.random())
+  }
 
   return {
     data,
     loading,
+    refreshData,
   }
 }
 
@@ -294,11 +299,8 @@ export const GetCurrentUserAssets = () => {
     const fetch = async () => {
       try {
         setLoading(true)
-
         const response = await UsersService.userAssets()
-        if (true) {
-          setData(response)
-        }
+        setData(response)
       } catch (error) {
         console.log(error)
       } finally {

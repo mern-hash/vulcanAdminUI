@@ -255,7 +255,7 @@ export const ProjectDetailsScreen = () => {
   const { data: transactions, refreshData: refreshTransactions } =
     GetMyTransactionsHook(types, id, statusType)
 
-  const { data: shares } = GetCurrentUserSharesHook(id);
+  const { data: shares, refreshData: reloadMyShares } = GetCurrentUserSharesHook(id);
 
   useEffect(() => {
     const tabs = document.querySelectorAll('.tab')
@@ -316,12 +316,12 @@ export const ProjectDetailsScreen = () => {
       {
         key: OfferingType.equity,
         label: `Equity`,
-        children: <Equity data={data} checkWallet={checkWallet} />,
+        children: <Equity data={data} checkWallet={checkWallet} reloadMyShares={reloadMyShares} />,
       },
       {
         key: OfferingType.debt,
         label: `Debt`,
-        children: <Debt data={data} checkWallet={checkWallet} />,
+        children: <Debt data={data} checkWallet={checkWallet} reloadMyShares={reloadMyShares} />,
       },
     ]
 

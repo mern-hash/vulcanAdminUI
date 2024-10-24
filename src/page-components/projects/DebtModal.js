@@ -20,7 +20,7 @@ const PledgeSchema = yup.object().shape({
   fundingSource: yup.string().trim().required('Funding Source is required'),
 })
 
-export const DebtModal = ({ data, open, closeModal, debtData }) => {
+export const DebtModal = ({ data, open, closeModal, debtData, reloadMyShares }) => {
   const [processing, setProcessing] = useState('')
   const [total, setTotal] = useState(0)
   const { data: wallet } = GetWalletOverview()
@@ -87,6 +87,7 @@ export const DebtModal = ({ data, open, closeModal, debtData }) => {
         paymentMethod: formData.fundingSource,
       })
       closeModal(true)
+      reloadMyShares()
     } catch (error) {
       notification.error({ message: error?.message || ErrorConstant.default })
     } finally {

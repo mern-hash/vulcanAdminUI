@@ -38,7 +38,7 @@ const PledgeSchema = yup.object().shape({
     .max(100, 'Pledge Percentage must be less than 100.'),
 })
 
-export const PledgeModal = ({ data, investData, open, closeModal }) => {
+export const PledgeModal = ({ data, investData, open, closeModal, reloadMyShares }) => {
   const [processing, setProcessing] = useState('')
   const [investmentFlow, setInvestmentFlow] = useState(false)
   const [openHowItWorksModal, setOpenHowItWorksModal] = useState(false)
@@ -147,6 +147,7 @@ export const PledgeModal = ({ data, investData, open, closeModal }) => {
         paymentMethod: formData.fundingSource,
       })
       closeModal(true)
+      reloadMyShares()
     } catch (error) {
       notification.error({ message: error?.message || ErrorConstant.default })
     } finally {

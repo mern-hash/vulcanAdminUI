@@ -94,7 +94,7 @@ const PledgeSection = styled.div`
   }
 `
 
-export const Equity = ({ data, checkWallet }) => {
+export const Equity = ({ data, checkWallet, reloadMyShares }) => {
   const [openPledgeModal, setOpenPledgeModal] = useState(false)
   const [openSuccessModal, setOpenSuccessModal] = useState(false)
   const [openTermsModal, setOpenTermsModal] = useState(false)
@@ -257,6 +257,7 @@ export const Equity = ({ data, checkWallet }) => {
         closeModal={closeModal}
         open={openPledgeModal}
         investData={investData}
+        reloadMyShares={reloadMyShares}
       />
       <SuccessModal
         open={openSuccessModal}

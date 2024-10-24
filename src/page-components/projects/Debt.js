@@ -66,7 +66,7 @@ const DebtSchema = yup.object().shape({
     .positive('The interest rate must be a positive number.'),
 })
 
-export const Debt = ({ data, checkWallet }) => {
+export const Debt = ({ data, checkWallet, reloadMyShares }) => {
   const [openDebtModal, setOpenDebtModal] = useState(false)
   const [debtData, setDebtData] = useState({})
   const [openSuccessModal, setOpenSuccessModal] = useState(false)
@@ -243,6 +243,7 @@ export const Debt = ({ data, checkWallet }) => {
         closeModal={closeModal}
         open={openDebtModal}
         debtData={debtData}
+        reloadMyShares={reloadMyShares}
       />
       <SuccessModal
         open={openSuccessModal}
