@@ -26,7 +26,7 @@ const initialSearch = {
   assetType: [],
   status: [],
   addressLocation: 'all',
-  projectMixStatus: ['available'],
+  projectMixStatus: [],
 }
 
 export const GetProjectsHook = (ownerOnly, tab = ProjectFilters.all) => {
@@ -282,7 +282,7 @@ export const GetApprovedProjectsHook = (currentTab) => {
     totalPerPage: 12,
     pageNumber: 1,
     searchFilter: {
-      projectMixStatus: ['available'],
+      projectMixStatus: [],
     },
   })
 
