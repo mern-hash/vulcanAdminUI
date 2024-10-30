@@ -33,6 +33,18 @@ const SettingsSchema = yup.object().shape({
     .number()
     .typeError('Days to fulfill capital call is required')
     .positive('Days to fulfill capital call should be positive number'),
+  firstTrancheBonusPercentage: yup
+    .number()
+    .typeError('First tranche bonus percentage is required')
+    .positive('First tranche bonus percentage should be a positive number')
+    .required('First tranche bonus percentage is required')
+    .transform((value) => (Number.isNaN(value) ? undefined : parseFloat(value))),
+  secondTrancheBonusPercentage: yup
+    .number()
+    .typeError('Second tranche bonus percentage is required')
+    .positive('Second tranche bonus percentage should be a positive number')
+    .required('Second tranche bonus percentage is required')
+    .transform((value) => (Number.isNaN(value) ? undefined : parseFloat(value))),
   disableAllInvestButtons: yup.boolean(),
   disableWithdrawWalletButton: yup.boolean(),
   disableTopUpWalletButton: yup.boolean(),
@@ -71,10 +83,14 @@ export const SystemSettingsScreen = () => {
       autoPassKYC: data.autoPassKYC || false,
       maxKYCAttempts: data.maxKYCAttempts,
       daysToFulfillCapitalCall: data.daysToFulfillCapitalCall,
+      firstTrancheBonusPercentage: (data?.firstTrancheBonusPercentage?.$numberDecimal || 1).toString(),
+      secondTrancheBonusPercentage: (data?.secondTrancheBonusPercentage?.$numberDecimal || 0.5).toString(),
     })
   }
 
   const save = async (formData) => {
+    formData.firstTrancheBonusPercentage = formData.firstTrancheBonusPercentage.toString()
+    formData.secondTrancheBonusPercentage = formData.secondTrancheBonusPercentage.toString()
     try {
       setProcessing('Saving')
       if (data?._id) {
@@ -156,6 +172,38 @@ export const SystemSettingsScreen = () => {
                 errors={errors?.daysToFulfillCapitalCall}
                 label="Days To Fulfill Capital Call"
                 required
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <MaskedNumberFormField
+                name="firstTrancheBonusPercentage"
+                control={control}
+                errors={errors?.firstTrancheBonusPercentage}
+                label="First Tranche Bonus Percentage"
+                required
+                maskOptions={{
+                  allowDecimal: true,
+                  decimalSymbol: '.',
+                  decimalLimit: 2,
+                }}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <MaskedNumberFormField
+                name="secondTrancheBonusPercentage"
+                control={control}
+                errors={errors?.secondTrancheBonusPercentage}
+                label="Second Tranche Bonus Percentage"
+                required
+                maskOptions={{
+                  allowDecimal: true,
+                  decimalSymbol: '.',
+                  decimalLimit: 2,
+                }}
               />
             </div>
           </div>
