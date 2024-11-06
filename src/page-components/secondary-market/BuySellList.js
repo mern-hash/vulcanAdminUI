@@ -18,7 +18,7 @@ export const BuyList = ({
         title: 'Type',
         dataIndex: 'equityOrDebt',
         key: 'equityOrDebt',
-        render: (value) => CommonUtility.toTitleCase(value),
+        render: (value) => CommonUtility.toTitleCase(value === "equity" ? "unitranche" : value),
       },
       {
         title: 'Price',
@@ -108,7 +108,7 @@ export const SellList = ({
         title: 'Type',
         dataIndex: 'equityOrDebt',
         key: 'equityOrDebt',
-        render: (value) => CommonUtility.toTitleCase(value),
+        render: (value) => CommonUtility.toTitleCase((value === "equity" ? "unitranche" : value)),
       },
       {
         title: 'Price',

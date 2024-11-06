@@ -85,7 +85,7 @@ export const OfferingTransaction = ({ projectId, isSponsor }) => {
         title: 'Share Type',
         key: 'type',
         dataIndex: 'type',
-        render: (value) => `${CommonUtility.toTitleCase(value)}`,
+        render: (value) => `${CommonUtility.toTitleCase(value === "equity" ? "unitranche" : value)}`,
       },
       {
         title: 'Transaction Amount',

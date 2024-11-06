@@ -61,7 +61,7 @@ export const PaymentType = {
 export const WalletTxType = {
   [WalletTxTypeKey.walletTopUp]: 'Top Up',
   [WalletTxTypeKey.walletWithdraw]: 'Withdraw',
-  [WalletTxTypeKey.equity]: 'Equity',
+  [WalletTxTypeKey.equity]: 'Unitranche',
   [WalletTxTypeKey.debt]: 'Debt',
   [WalletTxTypeKey.pledged]: 'Pledged',
   [WalletTxTypeKey.owned]: 'Owned',
@@ -74,7 +74,7 @@ export const WalletTxType = {
 export const TransactionTypes = {
   [WalletTxTypeKey.walletTopUp]: 'Top Up',
   [WalletTxTypeKey.walletWithdraw]: 'Withdraw',
-  [WalletTxTypeKey.equity]: 'Equity',
+  [WalletTxTypeKey.equity]: 'Unitranche',
   [WalletTxTypeKey.debt]: 'Debt',
   [WalletTxTypeKey.pledged]: 'Pledged',
   [WalletTxTypeKey.dividend]: 'Dividend',
@@ -84,7 +84,7 @@ export const TransactionTypes = {
 }
 
 export const OfferingTransactionTypes = {
-  [WalletTxTypeKey.equity]: 'Equity',
+  [WalletTxTypeKey.equity]: 'Unitranche',
   [WalletTxTypeKey.debt]: 'Debt',
   [WalletTxTypeKey.pledged]: 'Pledged',
   [WalletTxTypeKey.dividend]: 'Dividend',

@@ -98,7 +98,7 @@ export const TrancheList = ({ tranches, setTranches, canTakeAction }) => {
     <>
       <div className="row mb-3">
         <FlexRowBetween className="col-12 align-items-center">
-          <SectionHeader className="mb-0">Equity Shares Tranches *</SectionHeader>
+          <SectionHeader className="mb-0">Unitranche Shares Tranches *</SectionHeader>
           {canTakeAction && (
             <IconPrimaryButton
               text="Add New"

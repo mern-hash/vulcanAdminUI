@@ -31,7 +31,7 @@ export const SellBox = ({ data, successClick }) => {
   const [transactionType, setTransactionType] = useState()
 
   const typeList = useMemo(() => {
-    let temp = OfferingTypes.filter((x) => x.value !== OfferingType.unitrancheDebt)
+    let temp = OfferingTypes.filter((x) => x.value !== OfferingType.both)
     if (data.offeringType === OfferingType.equity) {
       temp = temp.filter((x) => x.value !== OfferingType.debt)
     } else if (data.offeringType === OfferingType.debt) {
@@ -119,7 +119,7 @@ export const SellBox = ({ data, successClick }) => {
                         options={typeList}
                         onChange={refresh}
                         extraLabel={
-                          <CustomTooltip text="Choose the shares type: Equity (ownership shares) or Debt (borrowed funds).">
+                          <CustomTooltip text="Choose the shares type: Unitranche (ownership shares) or Debt (borrowed funds).">
                             <Info size={32} />
                           </CustomTooltip>
                         }

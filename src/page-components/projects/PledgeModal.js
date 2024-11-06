@@ -134,7 +134,7 @@ export const PledgeModal = ({ data, investData, open, closeModal, reloadMyShares
     try {
       setProcessing('Processing')
       if (!investmentFlow && total.total > availableFund) {
-        notification.error({ message: "The available equity balance is insufficient." })
+        notification.error({ message: "The available unitranche balance is insufficient." })
         closeModal(false)
         return
       }
@@ -159,7 +159,7 @@ export const PledgeModal = ({ data, investData, open, closeModal, reloadMyShares
     <CustomModal
       width={526}
       open={open}
-      title={investmentFlow ? 'Equity' : 'Invest Shares'}
+      title={investmentFlow ? 'Unitranche' : 'Invest Shares'}
       closeIcon={<X size={16} weight="bold" />}
       onCancel={() => closeModal()}
       footer={[

@@ -34,7 +34,7 @@ export const TransactionForInvestorList = ({
         title: 'Type',
         dataIndex: 'type',
         key: 'type',
-        render: (value) => `${CommonUtility.toTitleCase(value)}`,
+        render: (value) => `${CommonUtility.toTitleCase(value === "equity" ? "unitranche" : value)}`,
       },
       {
         title: 'Amount',

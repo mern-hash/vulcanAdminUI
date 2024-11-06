@@ -254,7 +254,7 @@ export const ProjectOfferingSummary = ({ summary, waterfallSummary, data }) => {
                   nameSize="size-20"
                   valueSize="size-12"
                   nameWeight="name-semibold"
-                  tooltip="The Levered IRR calculates potential annual returns on an investment, considering both equity and borrowed funds. It shows the overall return considering leverage."
+                  tooltip="The Levered IRR calculates potential annual returns on an investment, considering both unitranche and borrowed funds. It shows the overall return considering leverage."
                 />
               </BorderWithShadow>
             </div>
@@ -266,7 +266,7 @@ export const ProjectOfferingSummary = ({ summary, waterfallSummary, data }) => {
                   nameSize="size-20"
                   nameWeight="name-semibold"
                   valueSize="size-12"
-                  tooltip="Unlevered IRR estimates annual returns without taxes or financing costs. It measures inherent profitability based solely on equity investment."
+                  tooltip="Unlevered IRR estimates annual returns without taxes or financing costs. It measures inherent profitability based solely on unitranche investment."
                 />
               </BorderWithShadow>
             </div>
@@ -274,11 +274,11 @@ export const ProjectOfferingSummary = ({ summary, waterfallSummary, data }) => {
               <BorderWithShadow small={1} className="px-4 py-3">
                 <CustomValueName
                   name={`${data?.targetedEquityMultiple || 0}x`}
-                  value="Targeted Equity Multiple"
+                  value="Targeted Unitranche Multiple"
                   nameSize="size-20"
                   nameWeight="name-semibold"
                   valueSize="size-12"
-                  tooltip="The Targeted Equity Multiple is the goal for returns. It's the multiple of the initial equity investment that investors aim to achieve."
+                  tooltip="The Targeted Unitranche Multiple is the goal for returns. It's the multiple of the initial unitranche investment that investors aim to achieve."
                 />
               </BorderWithShadow>
             </div>

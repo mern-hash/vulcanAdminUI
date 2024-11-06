@@ -159,19 +159,19 @@ export function CardList({ item,isLoggedIn,toggleFav }) {
 							common="border-right"
 							name={`${item.targetedInvestorLeveredIrr}%`}
 							value="Levered IRR"
-							tooltipText="The Levered IRR calculates potential annual returns on an investment, considering both equity and borrowed funds. It shows the overall return considering leverage."
+							tooltipText="The Levered IRR calculates potential annual returns on an investment, considering both unitranche and borrowed funds. It shows the overall return considering leverage."
 						/>
 						<DevelopmentBLock
 							common="border-right"
 							name={`${item.targetedInvestorUnleveredIrr}%`}
 							value="Unlevered IRR"
-							tooltipText="Unlevered IRR estimates annual returns without taxes or financing costs. It measures inherent profitability based solely on equity investment."
+							tooltipText="Unlevered IRR estimates annual returns without taxes or financing costs. It measures inherent profitability based solely on unitranche investment."
 						/>
 						<DevelopmentBLock
 							common="border-right"
 							name={`${item.targetedEquityMultiple}x`}
-							value="Targeted Equity Multiple"
-							tooltipText="The Targeted Equity Multiple is the goal for returns. It's the multiple of the initial equity investment that investors aim to achieve."
+							value="Targeted Unitranche Multiple"
+							tooltipText="The Targeted Unitranche Multiple is the goal for returns. It's the multiple of the initial unitranche investment that investors aim to achieve."
 						/>
 						<DevelopmentBLock
 							common="mt-xl-0 mt-md-3"

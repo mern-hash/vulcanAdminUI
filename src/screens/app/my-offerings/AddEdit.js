@@ -91,10 +91,10 @@ const ProjectSchema = yup.object().shape({
     .max(100, 'Unlevered IRR should not be more than 100'),
   targetedEquityMultiple: yup
     .number()
-    .typeError('Targeted Equity Multiple is required')
+    .typeError('Targeted Unitranche Multiple is required')
     .positive()
-    .max(10, 'Targeted Equity Multiple must not be greater than 10')
-    .required('Targeted Equity Multiple is required'),
+    .max(10, 'Targeted Unitranche Multiple must not be greater than 10')
+    .required('Targeted Unitranche Multiple is required'),
   totalDevelopmentPeriodInMonths: yup
     .number()
     .typeError('Development Period is required')
@@ -160,7 +160,7 @@ const ProjectSchema = yup.object().shape({
       ),
     ),
   equityTokenInfo: yup.object().when('offeringType', (offeringType, schema) => {
-    if ([OfferingType.equity, OfferingType.unitrancheDebt].includes(offeringType[0])) {
+    if ([OfferingType.equity, OfferingType.both].includes(offeringType[0])) {
       return schema.shape({
         tokenPrice: yup.number()
           .typeError('Token Price is required').required('Token Price is required'),
@@ -171,7 +171,7 @@ const ProjectSchema = yup.object().shape({
     return schema;
   }),
   debtTokenInfo: yup.object().when('offeringType', (offeringType, schema) => {
-    if ([OfferingType.debt, OfferingType.unitrancheDebt].includes(offeringType[0])) {
+    if ([OfferingType.debt, OfferingType.both].includes(offeringType[0])) {
       return schema.shape({
         tokenPrice: yup.number().typeError('Token Price is required').required('Token Price is required'),
         totalTokens: yup.number().typeError('Total Shares is required').required('Total Shares is required'),
@@ -693,7 +693,7 @@ export const MyOfferingAddEditScreen = () => {
                 required
                 options={SecondaryOfferingTypes}
                 extraLabel={
-                  <CustomTooltip text="The way in which the investment is structured, such as equity or debt.">
+                  <CustomTooltip text="The way in which the investment is structured, such as unitranche or debt.">
                     <Info size={32} />
                   </CustomTooltip>
                 }
@@ -806,11 +806,11 @@ export const MyOfferingAddEditScreen = () => {
           </div>
         </BorderWithShadow>
 
-        {[OfferingType.equity, OfferingType.unitrancheDebt].includes(offeringType) && (
+        {[OfferingType.equity, OfferingType.both].includes(offeringType) && (
           <BorderWithShadow className="p-4 pb-0 mb-3">
             <div className="row">
               <div className="col-12">
-                <SectionHeader>Equity Token Info</SectionHeader>
+                <SectionHeader>Unitranche Token Info</SectionHeader>
               </div>
             </div>
             <div className="row gx-3">
@@ -862,7 +862,7 @@ export const MyOfferingAddEditScreen = () => {
           </BorderWithShadow>
         )}
 
-        {[OfferingType.debt, OfferingType.unitrancheDebt].includes(offeringType) && (
+        {[OfferingType.debt, OfferingType.both].includes(offeringType) && (
           <BorderWithShadow className="p-4 pb-0 mb-3">
             <div className="row">
               <div className="col-12">
@@ -1029,10 +1029,10 @@ export const MyOfferingAddEditScreen = () => {
                 name="targetedEquityMultiple"
                 control={control}
                 errors={errors?.targetedEquityMultiple}
-                label="Targeted Equity Multiple"
+                label="Targeted Unitranche Multiple"
                 required
                 extraLabel={
-                  <CustomTooltip text="The desired multiple of initial equity investment that the sponsor aims to achieve upon project completion.">
+                  <CustomTooltip text="The desired multiple of initial unitranche investment that the sponsor aims to achieve upon project completion.">
                     <Info size={32} />
                   </CustomTooltip>
                 }

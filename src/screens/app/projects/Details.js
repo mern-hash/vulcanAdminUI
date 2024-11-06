@@ -315,7 +315,7 @@ export const ProjectDetailsScreen = () => {
     let temp = [
       {
         key: OfferingType.equity,
-        label: `Equity`,
+        label: `Unitranche`,
         children: <Equity data={data} checkWallet={checkWallet} reloadMyShares={reloadMyShares} />,
       },
       {

@@ -19,8 +19,8 @@ const SettingsSchema = yup.object().shape({
     .positive('Freeze Duration should be positive number'),
   stopFundingEquityGoal: yup
     .number()
-    .typeError('Stop Funding Equity Goal is required')
-    .positive('Stop Funding Equity Goal should be positive number'),
+    .typeError('Stop Funding Unitranche Goal is required')
+    .positive('Stop Funding Unitranche Goal should be positive number'),
   stopFundingDebtGoal: yup
     .number()
     .typeError('Stop Funding Debt Goal is required')
@@ -137,7 +137,7 @@ export const SystemSettingsScreen = () => {
                 name="stopFundingEquityGoal"
                 control={control}
                 errors={errors?.stopFundingEquityGoal}
-                label="Stop Funding Equity Goal %"
+                label="Stop Funding Unitranche Goal %"
                 required
               />
             </div>

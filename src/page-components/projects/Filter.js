@@ -7,15 +7,15 @@ import { useMemo } from 'react'
 export const OfferingTypes = [
   {
     value: OfferingType.equity,
-    label: 'Equity',
+    label: 'Unitranche',
   },
   {
     value: OfferingType.debt,
     label: 'Debts',
   },
   {
-    value: OfferingType.unitrancheDebt,
-    label: 'Unitranche Debt',
+    value: OfferingType.both,
+    label: 'Both',
   },
 ]
 
@@ -380,7 +380,7 @@ export const FilterDrawer = ({
             onChange={(value) => onChange('targetedInvestorLeveredIrr', value)}
           />
           <SliderFilter
-            label="Targeted Equity Multiple"
+            label="Targeted Unitranche Multiple"
             min={0}
             max={20}
             value={filter.targetedEquityMultiple}

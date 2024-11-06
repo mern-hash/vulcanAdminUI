@@ -33,7 +33,7 @@ export const OfferingTreasure = ({ statistics }) => {
                   name={CommonUtility.currencyFormat(
                     statistics?.totalEquityInvestment,
                   )}
-                  value="Total Equity Investment:"
+                  value="Total Unitranche Investment:"
                 />
               </div>
             </div>
@@ -44,7 +44,7 @@ export const OfferingTreasure = ({ statistics }) => {
                   name={CommonUtility.currencyFormat(
                     statistics?.totalEquityPledged,
                   )}
-                  value="Total Equity Pledged:"
+                  value="Total Unitranche Pledged:"
                 />
               </div>
               <div className="col-4  ps-1">
@@ -70,7 +70,7 @@ export const OfferingTreasure = ({ statistics }) => {
                     name={CommonUtility.currencyFormat(
                       statistics?.averageEquity,
                     )}
-                    value="Average Equity:"
+                    value="Average Unitranche:"
                   />
                 </div>
                 <div className="col-4 ps-2">
@@ -79,7 +79,7 @@ export const OfferingTreasure = ({ statistics }) => {
                     name={CommonUtility.currencyFormat(
                       statistics?.averageEquityPledged,
                     )}
-                    value="Average Equity Pledged:"
+                    value="Average Unitranche Pledged:"
                   />
                 </div>
                 <div className="col-4">
@@ -96,7 +96,7 @@ export const OfferingTreasure = ({ statistics }) => {
                       name={CommonUtility.currencyFormat(
                         statistics?.minimumEquity,
                       )}
-                      value="Minimum Equity:"
+                      value="Minimum Unitranche:"
                     />
                   </div>
                   <div className="col-4">
@@ -105,7 +105,7 @@ export const OfferingTreasure = ({ statistics }) => {
                       name={CommonUtility.currencyFormat(
                         statistics?.minimumEquityPledged,
                       )}
-                      value="Minimum Equity Pledged:"
+                      value="Minimum Unitranche Pledged:"
                     />
                   </div>
                   <div className="col-4 ps-4">
@@ -123,7 +123,7 @@ export const OfferingTreasure = ({ statistics }) => {
                       name={CommonUtility.currencyFormat(
                         statistics?.maximumEquity,
                       )}
-                      value="Maximum Equity:"
+                      value="Maximum Unitranche:"
                     />
                   </div>
                   <div className="col-4">
@@ -132,7 +132,7 @@ export const OfferingTreasure = ({ statistics }) => {
                       name={CommonUtility.currencyFormat(
                         statistics?.maximumEquityPledged,
                       )}
-                      value="Maximum Equity Pledged:"
+                      value="Maximum Unitranche Pledged:"
                     />
                   </div>
                   <div className="col-4 ps-4">
