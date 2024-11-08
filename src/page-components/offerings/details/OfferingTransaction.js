@@ -50,7 +50,7 @@ export const OfferingTransaction = ({ projectId, isSponsor }) => {
   const openUserData = (data) => {
     setModalData({
       projectId,
-      userId: data?.project.owner?._id,
+      userId: data?.owner?._id,
     })
     setOpenUserModal(true)
   }
@@ -71,14 +71,13 @@ export const OfferingTransaction = ({ projectId, isSponsor }) => {
         render: (date) => DateUtility.dateToString(date, DateFormat.date),
       },
       {
-        title: 'User Information',
-        dataIndex: 'project',
-        key: 'project',
+        title: 'Investor Information',
+        dataIndex: 'owner',
+        key: 'owner',
         render: (value, record) => (
           <a
             onClick={() => openUserData(record)}
-          >{`${value?.owner
-            .name}`}</a>
+            >{`${value.givenName} ${value.familyName}`}</a>
         ),
       },
       {
