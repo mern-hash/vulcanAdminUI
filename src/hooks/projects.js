@@ -93,6 +93,15 @@ export const GetProjectsHook = (ownerOnly, tab = ProjectFilters.all) => {
               filter.searchFilter.equityRaisedPercentage[1],
             ),
           )
+
+          builder = builder.totalInvestmentBetween(
+            CommonUtility.toDecimal(
+              filter.searchFilter.totalInvestment[0],
+            ),
+            CommonUtility.toDecimal(
+              filter.searchFilter.totalInvestment[1],
+            ),
+          )
         }
 
         const queryParams = {}

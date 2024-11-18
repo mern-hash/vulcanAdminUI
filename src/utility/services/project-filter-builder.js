@@ -1456,6 +1456,14 @@ export class ProjectFilterBuilder {
     return this;
   }
 
+    /** @param {number} min
+     * @param {number} max
+     */
+    totalInvestmentBetween(min, max) {
+      this.#query = { ...this.#query, totalInvestment: { $gte: min, $lte: max } };
+      return this;
+  }
+
   /** @param {Date} investmentInformationUpdatedAt */
   investmentInformationUpdatedAtEqual(investmentInformationUpdatedAt) {
     this.#query = { ...this.#query, investmentInformationUpdatedAt: { $eq: investmentInformationUpdatedAt } };
