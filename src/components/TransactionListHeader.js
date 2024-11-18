@@ -50,7 +50,7 @@ export const TransactionListHeader = ({
   const [searchProject, setSearchProject] = useState('')
   const [search, setSearch] = useState({
     email: '',
-    projectId: null,
+    // projectId: null,
     id: '',
     transactionTypes: [],
     statusList: [],
@@ -106,7 +106,7 @@ export const TransactionListHeader = ({
   const reset = () => {
     const temp = {
       email: '',
-      projectId: null,
+      // projectId: null,
       id: '',
       transactionTypes: [],
       statusList: [],
