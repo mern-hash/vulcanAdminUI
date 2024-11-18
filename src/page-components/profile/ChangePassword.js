@@ -10,6 +10,7 @@ import {
   LoaderBar,
 } from 'components'
 import { ErrorConstant,Strings } from 'utility'
+import { useNavigate } from 'react-router-dom'
 
 const ChangePasswordSchema = yup.object().shape({
   oldPassword: yup.string().when('$sponsorCP',(sponsorCP,schema) => sponsorCP ? schema.trim() : schema.trim().required("*Old Password is required")),
@@ -38,6 +39,7 @@ export const ChangePassword = ({ sponsorCP,changePassword }) => {
       sponsorCP,
     },
   })
+  const navigate = useNavigate()
 
   const newPassword = watch("newPassword")
 
@@ -46,6 +48,7 @@ export const ChangePassword = ({ sponsorCP,changePassword }) => {
       setProcessing('Changing Password')
       await changePassword(formData)
       notification.success({ message: 'Password has been saved successfully.' })
+      navigate('/app/profile')
       reset({})
     } catch (error) {
       notification.error({
