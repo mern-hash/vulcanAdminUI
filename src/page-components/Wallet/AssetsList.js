@@ -4,17 +4,20 @@ import {
   AppTable,
   ImageWithFallback,
   PageHeader,
+  TransactionDetailsModal,
 } from 'components'
 import {
   CommonUtility,
   DateFormat,
   DateUtility,
   WalletTxType,
+  WalletTxTypeKey,
 } from 'utility'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { Title } from 'elements'
+import { PrimaryButton, Title } from 'elements'
+import { Button } from 'antd'
 
 const CardImage = styled(ImageWithFallback)`
   aspect-ratio: 1 / 0.956;
@@ -41,50 +44,66 @@ const PageContainer = styled.div`
 
 export const AssetsList = ({
   list,
+  pledgeList,
   loading,
-  pageSize,
   total,
   currentPage,
   pageChanged,
+  capitalCall,
 }) => {
-
+  const [modalData, setModalData] = useState(null)
+  const [openModal, setOpenModal] = useState(false)
+  const openDetails = (data) => {
+    setModalData({
+      ...data,
+    })
+    setOpenModal(true)
+  }
+  const closeModal = () => {
+    setModalData(null)
+    setOpenModal(false)
+  }
   const aggregatedData = useMemo(() => {
     const result = list.flatMap((res) => {
+      const pledgeFilterList = pledgeList.filter((item) => item?.project?._id === res?.projectData?._id)
+      const nonOwnedList = pledgeFilterList.length || 0
       const debtEntry = {
-        project: res.projectData,
+        project: res?.projectData,
         type: 'debt',
+        shareStatus: "owned",
         tokenCount: res.debtMetrics?.shares,
-        totalValue: res.debtMetrics?.averageAmount,
-        mostRecentDate: new Date(res.debtMetrics?.date),
-        rowSpan: res.debtMetrics?.shares && res.equityMetrics?.shares ? 2 : 1,
+        shareCostBasis: res?.debtMetrics?.averageAmount,
+        value: res?.equityMetrics?.totalCost,
+        updatedAt: new Date(res.debtMetrics?.date),
+        rowSpan: res.debtMetrics?.shares && res.equityMetrics?.shares ? nonOwnedList + 2 : nonOwnedList + 1,
       };
 
       const equityEntry = {
-        project: res.projectData,
+        project: res?.projectData,
         type: 'equity',
+        shareStatus: "owned",
         tokenCount: res.equityMetrics?.shares,
-        totalValue: res.equityMetrics?.averageAmount,
-        mostRecentDate: new Date(res.equityMetrics?.date),
-        rowSpan: res.debtMetrics?.shares && res.equityMetrics?.shares ? 0 : 1,
+        shareCostBasis: res.equityMetrics?.averageAmount,
+        value: res?.equityMetrics?.totalCost,
+        updatedAt: new Date(res.equityMetrics?.date),
+        rowSpan: res.debtMetrics?.shares && res.equityMetrics?.shares ? 0 : nonOwnedList + 1,
       };
-
-      return [debtEntry, equityEntry];
+      const computeArray = []
+      if (debtEntry?.tokenCount) {
+        computeArray.push(debtEntry)
+      }
+      if (equityEntry?.tokenCount) {
+        computeArray.push(equityEntry)
+      }
+      computeArray.push(...pledgeFilterList)
+      return computeArray; // [debtEntry, equityEntry, ...pledgeFilterList];
     });
-
-    const filteredResult = result.filter((data) => data.tokenCount > 0);
-
-    const data = filteredResult.map((data) => ({
-      project: data.project,
-      type: data.type,
-      tokenCount: data.tokenCount,
-      averagePrice: data.totalValue,
-      mostRecentDate: data.mostRecentDate,
-      rowSpan: data.rowSpan,
+    const data = result.map((record) => ({
+      rowSpan: record.rowSpan || 0,
+      ...record,
     }));
-
     return data;
-  }, [list]);
-
+  }, [list, pledgeList]);
   const columns = useMemo(
     () => [
       {
@@ -108,28 +127,94 @@ export const AssetsList = ({
           ),
       },
       {
-        title: 'Date',
-        dataIndex: 'mostRecentDate',
-        key: 'mostRecentDate',
+        title: 'Date Updated',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        width: '100px',
         render: (date) => DateUtility.dateToString(date, DateFormat.date),
       },
       {
-        title: 'Type',
+        title: 'Share Status',
         dataIndex: 'type',
         key: 'type',
-        render: (value) => WalletTxType[value],
+        width: '100px',
+        render: (value, record) =>
+          WalletTxType[
+            record.equityPledge?.shareStatus ||
+              record.debtPledge?.shareStatus ||
+              value
+          ],
       },
       {
-        title: 'Count',
-        dataIndex: 'tokenCount',
-        key: 'tokenCount',
-        render: (count) => CommonUtility.numberWithCommas(count),
+        title: 'Share Count',
+        dataIndex: 'shareCount',
+        key: 'shareCount',
+        width: '100px',
+        render: (_, record) =>
+          [
+            WalletTxTypeKey.walletTopUp,
+            WalletTxTypeKey.walletWithdraw,
+          ].includes(record.type)
+            ? '-'
+            : record.tokenCount || `${
+                record?.equityPledge
+                  ? CommonUtility.numberWithCommas(
+                      record.equityPledge?.tokenCount,
+                    ) || '-'
+                  : CommonUtility.numberWithCommas(
+                      record.debtPledge?.tokenCount,
+                    ) || '-'
+              }`,
       },
       {
-        title: 'Average Price',
-        dataIndex: 'averagePrice',
-        key: 'averagePrice',
+        title: 'Share Cost',
+        dataIndex: 'shareCostBasis',
+        key: 'shareCostBasis',
+        width: '100px',
+        render: (_, record) =>
+          [
+            WalletTxTypeKey.walletTopUp,
+            WalletTxTypeKey.walletWithdraw,
+          ].includes(record.type)
+            ? '-'
+            : record.shareCostBasis ? CommonUtility.currencyFormat(record.shareCostBasis) : `${
+                record?.equityPledge
+                  ? CommonUtility.currencyFormat(
+                      record.equityPledge.investmentPrice /
+                        record.equityPledge.tokenCount,
+                    )
+                  : record.debtPledge
+                  ? CommonUtility.currencyFormat(
+                      record.debtPledge.investmentPrice /
+                        record.debtPledge.tokenCount,
+                    )
+                  : '-'
+              }`,
+      },
+      {
+        title: 'Total Paid',
+        dataIndex: 'value',
+        key: 'value',
+        width: '100px',
         render: (amount) => CommonUtility.currencyFormat(amount),
+      },
+      {
+        title: 'Action',
+        dataIndex: 'action',
+        key: 'action',
+        width: '100px',
+        render: (_, record) => (
+          <>
+            {record.shareStatus !== "owned" && <Button type="link" onClick={() => openDetails(record)}>
+              Details
+            </Button>}
+            {(!!record?.equityPledge?.mustPayRemaining) && (
+              <PrimaryButton onClick={() => capitalCall(record)}>
+                Complete Payment
+              </PrimaryButton>
+            )}
+          </>
+        ),
       },
     ],
     [list],
@@ -147,9 +232,14 @@ export const AssetsList = ({
           loading={loading}
           pageChanged={pageChanged}
           currentPage={currentPage}
-          pageSize={pageSize}
+          pageSize={aggregatedData.length}
           total={total}
           bordered
+        />
+        <TransactionDetailsModal
+          closeModal={closeModal}
+          open={openModal}
+          data={modalData}
         />
       </PageContainer>
     </>

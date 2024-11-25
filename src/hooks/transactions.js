@@ -221,18 +221,21 @@ export const GetWalletDataHook = (transactionTypes) => {
         )
         const tempData = []
         response.data.forEach((item) => {
-          item.transactions.forEach((transaction, index) => {
-            tempData.push({
-              ...item,
-              ...transaction,
-              rowSpan:
-                // eslint-disable-next-line no-nested-ternary
-                item.transactions.length > 0
-                  ? index === 0
-                    ? item.transactions.length
-                    : 0
-                  : 1,
-            })
+          item.transactions.forEach((transaction) => {
+            if (transaction.type === "equity" && transaction.equityPledge.shareStatus !== "owned") {
+              // delete item.transactions;
+              tempData.push({
+                ...item,
+                ...transaction,
+                // rowSpan:
+                //   // eslint-disable-next-line no-nested-ternary
+                //   item.transactions.length > 0
+                //     ? index === 0
+                //       ? item.transactions.length
+                //       : 0
+                //     : 1,
+              })
+            }
           })
         })
         setData(tempData)

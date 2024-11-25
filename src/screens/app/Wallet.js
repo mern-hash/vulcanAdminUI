@@ -6,7 +6,6 @@ import { GetWalletOverview } from 'hooks/wallet'
 import {
   AddFundsModal,
   CapitalCallModal,
-  // WalletList,
   WalletOverview,
 } from 'page-components/Wallet'
 import { AssetsList } from 'page-components/Wallet/AssetsList'
@@ -113,7 +112,6 @@ export const WalletScreen = () => {
   const {
     data: assets,
   } = GetCurrentUserAssets()
-
   const [addFundOpen, setAddFundOpen] = useState(false)
   const [withdrawOpen, setWithdrawOpen] = useState(false)
 
@@ -167,7 +165,16 @@ export const WalletScreen = () => {
           />
         </BankBLockRight>
       </BankBlock>
-
+      <AssetsList
+        list={assets}
+        pledgeList={list}
+        loading={loading}
+        currentPage={filter.pageNumber}
+        pageChanged={pageChanged}
+        total={total}
+        capitalCall={capitalCall}
+        pageSize={list.length}
+        />
       {/* <WalletList
         list={list}
         loading={loading}
@@ -177,16 +184,6 @@ export const WalletScreen = () => {
         capitalCall={capitalCall}
         pageSize={list.length}
       /> */}
-
-      <AssetsList
-        list={assets}
-        loading={loading}
-        currentPage={filter.pageNumber}
-        pageChanged={pageChanged}
-        total={total}
-        capitalCall={capitalCall}
-        pageSize={list.length} />
-
       <AddFundsModal open={addFundOpen} closeModal={closeModal} />
       <WithdrawFundsModal
         open={withdrawOpen}
