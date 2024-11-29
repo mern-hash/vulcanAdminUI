@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
+  AddressAutoCompleteFormField,
   FormDateField,
   FormSelectionField,
   FormTextFormField,
@@ -656,11 +657,12 @@ export const MyOfferingAddEditScreen = () => {
               />
             </div>
             <div className="col-12 col-md-6 col-xl-6">
-              <FormTextFormField
+               <AddressAutoCompleteFormField
                 name="addressLocation"
-                control={control}
-                errors={errors?.addressLocation}
                 label="Address"
+                placeholder="Address"
+                control={control}
+                errors={errors}
                 required
                 extraLabel={
                   <CustomTooltip text="The physical location or property address associated with the project.">

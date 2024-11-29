@@ -1,4 +1,5 @@
 import {
+  AddressAutoCompleteFormField,
   FormDateField,
   FormSelectionField,
   FormTextFormField,
@@ -89,11 +90,11 @@ export const InfoStep = ({ user, goNext, goBack }) => {
       <Form layout="vertical" onFinish={handleSubmit(save)}>
         <div className="row">
           <div className="col col-12 col-sm-6 col-md-6">
-            <FormTextFormField
+            <AddressAutoCompleteFormField
               name="address"
-              control={control}
-              errors={errors?.address}
               label="Your Address"
+              control={control}
+              errors={errors}
               required
             />
           </div>

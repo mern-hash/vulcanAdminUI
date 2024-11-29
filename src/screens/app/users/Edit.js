@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
+  AddressAutoCompleteFormField,
   FormDateField,
   FormSelectionField,
   FormTextFormField,
@@ -131,9 +132,7 @@ export const UserEditScreen = () => {
         name: `${formData.givenName} ${formData.familyName}`,
         phone: `+${formData.phone.replace(/\+/g, '')}`,
       }
-      await UsersService.patch(user?.userData?._id,
-        requestData,
-      )
+      await UsersService.patch(user?.userData?._id, requestData)
       notification.success({
         message: 'The user has been updated successfully.',
       })
@@ -199,12 +198,12 @@ export const UserEditScreen = () => {
         </div>
         <div className="row gx-3">
           <div className="col-12 col-md-6 col-xl-6">
-            <FormTextFormField
+            <AddressAutoCompleteFormField
               name="address"
+              label="Your Address"
               control={control}
-              errors={errors?.address}
-              label="Your address"
-              required
+              errors={errors}
+              required={false}
             />
           </div>
           <div className="col-12 col-md-6 col-xl-6">

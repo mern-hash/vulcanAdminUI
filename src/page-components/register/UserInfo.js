@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { CustomHeading, OnPageMessage } from 'components'
 import { Form } from 'antd'
-import { FormTextFormField, PrimaryButton } from 'elements'
+import {
+  AddressAutoCompleteFormField,
+  FormTextFormField,
+  PrimaryButton,
+} from 'elements'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -67,12 +71,12 @@ export const UserInfo = ({ userData, nextScreen }) => {
           defaultValue=""
           label="Last Name"
         />
-        <FormTextFormField
-          control={control}
+        <AddressAutoCompleteFormField
           name="address"
-          errors={errors?.address}
-          defaultValue=""
           label="Your Address"
+          control={control}
+          errors={errors}
+          required
         />
         {error && <OnPageMessage message={error} type="error" />}
         <PrimaryButton

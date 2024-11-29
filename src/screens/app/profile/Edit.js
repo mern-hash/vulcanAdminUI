@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
+  AddressAutoCompleteFormField,
   FormTextAreaFormField,
   FormTextFormField,
   PrimaryButton,
@@ -266,11 +267,11 @@ export const ProfileEditScreen = () => {
           </div> */}
           <div className="row">
             <div className="col">
-              <FormTextFormField
+              <AddressAutoCompleteFormField
                 name="address"
-                control={control}
-                errors={errors?.address}
                 label="Your Address"
+                control={control}
+                errors={errors}
                 required
               />
             </div>

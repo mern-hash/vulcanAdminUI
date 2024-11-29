@@ -23,6 +23,7 @@ import {
 } from './CustomMaskInput'
 import ReactPasswordChecklist from 'react-password-checklist'
 import { theme } from 'utility'
+import AddressAutocomplete from './AddressAutocomplete'
 
 const { TextArea } = Input
 const { RangePicker } = DatePicker
@@ -542,6 +543,47 @@ export function FormTextFormField({
       )}
     />
   )
+}
+
+export function AddressAutoCompleteFormField({
+  name,
+  label,
+  placeholder = 'Enter your address',
+  required = false,
+  control,
+  errors,
+  extraLabel,
+}) {
+  return (
+    <div className={`form-group ${errors?.[name] ? 'error' : ''}`}>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue=""
+        render={({ field }) => (
+          <MaskedFormInput
+          label={
+            <Label extraLabel={extraLabel} label={label} required={required} />
+          }
+          rules={[{ required, message: errors?.[name]?.message }]}
+          className={`mb-3 mb-md-4 ${errors?.[name]?.message && 'error'}`}
+        >
+            <AddressAutocomplete
+              {...field}
+              errors={errors}
+              placeholder={placeholder}
+              onAddressSelect={(address) => field.onChange(address)}
+            />
+           {errors?.[name] && (
+            <DangerText className="danger">
+              {errors?.[name]?.message}
+            </DangerText>
+          )}
+        </MaskedFormInput>
+        )}
+      />
+    </div>
+  );
 }
 
 export function FormPasswordFormField({
